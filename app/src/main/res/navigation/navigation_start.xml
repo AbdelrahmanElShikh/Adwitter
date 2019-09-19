@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_start"
+    app:startDestination="@id/splash_fragment">
+    <action
+        android:id="@+id/actionToMain"
+        app:destination="@id/main_activity"
+        app:popUpTo="@id/navigation_main"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/splash_fragment"
+        android:name="com.marketune.adwitter.ui.start.splash.SplashFragment"
+        android:label="splash screen"
+        tools:layout="@layout/splash_fragment">
+
+        <action
+            android:id="@+id/action_splash_fragment_to_login_fragment"
+            app:destination="@id/login_fragment"
+            app:popUpTo="@+id/navigation_start"
+             />
+    </fragment>
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.marketune.adwitter.ui.start.login.LoginFragment"
+        android:label="login"
+        tools:layout="@layout/login_fragment"
+        app:popUpToInclusive="true">
+        <action
+            android:id="@+id/action_login_fragment_to_registerFragment"
+            app:destination="@id/registerFragment"
+            />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.marketune.adwitter.ui.start.register.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/register_fragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_login_fragment"
+            app:destination="@id/login_fragment"
+            app:popUpTo="@+id/navigation_start"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+
+
+    <activity
+        android:id="@+id/main_activity"
+        android:name="com.marketune.adwitter.ui.main.MainActivity"
+        android:label="Main Activity"
+        tools:layout="@layout/activty_main" />
+
+
+</navigation>

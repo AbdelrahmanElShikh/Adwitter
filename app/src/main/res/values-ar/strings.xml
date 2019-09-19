@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">أدويتر</string>
+    <!-- Login Screen-->
+    <string name="loginText_welcome">مرحبا بعودتك !</string>
+    <string name="textLogin_ready">هل انت مستعد للبدء الان؟</string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="signin">تسجيل الدخول</string>
+    <string name="or">او</string>
+    <string name="dont_have_account">لا متلك حساب ؟</string>
+
+    <!-- Register Screen-->
+    <string name="create_account">انشاء حساب</string>
+    <string name="user_name">اسم المستخدم</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="back">العودة</string>
+    <string name="not_identical">غير متطابقين</string>
+    <string name="enter_password">من فضلك ادخل لمة المرور</string>
+
+</resources>

@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "770152989571",
+    "firebase_url": "https://adwitter-36828.firebaseio.com",
+    "project_id": "adwitter-36828",
+    "storage_bucket": "adwitter-36828.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770152989571:android:41df1a1f3a58b7e1",
+        "android_client_info": {
+          "package_name": "com.marketune.adwitter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770152989571-sb9m6u9edchql60ilmmdf6rpa6u0jpfd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marketune.adwitter",
+            "certificate_hash": "dc4b526c6ee5fc6dd89418a70736165185da2921"
+          }
+        },
+        {
+          "client_id": "770152989571-l1ichjaj1dk3fq0oe0he753srhtfuu7s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marketune.adwitter",
+            "certificate_hash": "28a557d2ef369ad7ad003373b0c767ffe3cdd276"
+          }
+        },
+        {
+          "client_id": "770152989571-7momd4kfmlr5nktouj0sr146g3iaice0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marketune.adwitter",
+            "certificate_hash": "ddce0e50b7d9008c864c1d13129354647cceb5e5"
+          }
+        },
+        {
+          "client_id": "770152989571-prgbv3932o2dq7heb5559dpvhfb9adqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-7H0N6DGnICn2GJJtsN6PxwIq3ofY-qQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770152989571-prgbv3932o2dq7heb5559dpvhfb9adqs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "770152989571-3tvdqvblnhsievf227rcm5vs9oq575q8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "adwitter.com"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770152989571:android:f25b309a71aae9ad",
+        "android_client_info": {
+          "package_name": "com.smubator.adwitter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770152989571-prgbv3932o2dq7heb5559dpvhfb9adqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-7H0N6DGnICn2GJJtsN6PxwIq3ofY-qQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770152989571-prgbv3932o2dq7heb5559dpvhfb9adqs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "770152989571-3tvdqvblnhsievf227rcm5vs9oq575q8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "adwitter.com"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

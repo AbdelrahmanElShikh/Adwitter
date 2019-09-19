@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Adwitter</string>
+
+    <!--splash screen-->
+
+    <!-- Login Screen-->
+    <string name="loginText_welcome">Welcome Back!</string>
+    <string name="textLogin_ready">Are you ready to start order now?</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="signin">Sign in</string>
+    <string name="or">OR</string>
+    <string name="dont_have_account">Don\'t have an account yet?</string>
+
+
+    <!--Register Screen-->
+    <string name="create_account">Create Account</string>
+    <string name="user_name">User Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="back">Back</string>
+
+
+    <!--NOTIFICATION-->
+    <string name="main_notification_channel_name" translatable="false">Primary</string>
+    <string name="not_identical">Not identical</string>
+    <string name="enter_password">Please enter the password for your account</string>
+</resources>
