@@ -25,7 +25,6 @@ import com.marketune.adwitter.models.AccessToken
 import com.marketune.adwitter.models.TokenManager
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validEmail
-import okhttp3.ResponseBody
 
 /**
  * @author : Abdel-Rahman El-Shikh
