@@ -56,4 +56,7 @@ dependencies {
     //Easy Validation
     implementation "com.wajahatkarim3.easyvalidation:easyvalidation-core:1.0.1"
 
+    //circular image
+    implementation 'com.mikhaellopez:circularimageview:3.0.2'
+
 }

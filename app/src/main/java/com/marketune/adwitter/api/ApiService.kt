@@ -1,9 +1,11 @@
 package com.marketune.adwitter.api
 
 import com.marketune.adwitter.models.AccessToken
+import com.marketune.adwitter.models.User
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 /**
@@ -27,4 +29,8 @@ interface ApiService {
         @Field("password") password: String,
         @Field("fcm_token") fcmToken: String
     ):Call<AccessToken>
+
+    @GET("user")
+    fun getUserInfo():Call<User>
+
 }

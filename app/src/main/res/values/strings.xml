@@ -29,4 +29,9 @@
 
     <!--common-->
     <string name="image">image</string>
+
+    <!--Navigation drawer-->
+    <string name="name">name</string>
+    <string name="active">Active</string>
+    <string name="balance">Balance: %2$s</string>
 </resources>
