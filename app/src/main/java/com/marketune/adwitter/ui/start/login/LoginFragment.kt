@@ -70,7 +70,6 @@ class LoginFragment : Fragment(), TextWatcher {
                     Log.e(TAG, "getInstanceId failed", task.exception)
                     return@OnCompleteListener
                 }
-                //  Toast.makeText(activity,task.result!!.token,Toast.LENGTH_SHORT).show()
                 loginFromBackEnd(task.result!!.token)
             })
 

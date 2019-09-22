@@ -94,7 +94,6 @@ class RegisterFragment : Fragment(), TextWatcher {
                     Log.w(TAG, "getInstanceId failed", task.exception)
                     return@OnCompleteListener
                 }
-                //  Toast.makeText(activity,task.result!!.token,Toast.LENGTH_SHORT).show()
                 registerInBackEnd(task.result!!.token)
             })
 
