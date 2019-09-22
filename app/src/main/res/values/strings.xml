@@ -24,4 +24,9 @@
     <string name="main_notification_channel_name" translatable="false">Primary</string>
     <string name="not_identical">Not identical</string>
     <string name="enter_password">Please enter the password for your account</string>
+    <string name="start_number_error">Name cannot start with number.</string>
+
+
+    <!--common-->
+    <string name="image">image</string>
 </resources>

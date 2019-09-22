@@ -27,7 +27,7 @@ import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validEmail
 
 /**
- * @author : Abdel-Rahman El-Shikh
+ * @author : Abdel-Rahman El-Shikh :)
  */
 private const val TAG = "RegisterFragment"
 
@@ -45,15 +45,26 @@ class RegisterFragment : Fragment(), TextWatcher {
 
         binding.edtPassword.addTextChangedListener(this)
         binding.edtConfirmPassword.addTextChangedListener(this)
+        binding.edtUserName.addTextChangedListener(this)
+        binding.edtEmail.addTextChangedListener(this)
         binding.btnRegister.setOnClickListener { register() }
         binding.btnBack.setOnClickListener { controller().navigate(R.id.action_registerFragment_to_login_fragment) }
         tokenManager = TokenManager.getInstance(context)
         return binding.root
     }
 
+    /**
+     * applying data validation on the user input and then,
+     * if all data fields valid , performing backend registration with fcm token.
+     */
     private fun register() {
         var isValidData = true
         if (!(checkEmpty(binding.edtUserName) || checkEmpty(binding.edtEmail))) {
+            if(Character.isDigit(binding.edtUserName.text!![0])){
+                isValidData = false
+                binding.tilName.error = getString(R.string.start_number_error)
+
+            }
             binding.edtPassword.nonEmpty {
                 binding.tilPassword.error = getString(R.string.enter_password)
                 isValidData = false
@@ -90,7 +101,7 @@ class RegisterFragment : Fragment(), TextWatcher {
     }
 
     private fun registerInBackEnd(token: String) {
-        Log.i(TAG, "FCMTOKEN SUCCESS - > : $token")
+        Log.i(TAG, "FCM_TOKEN SUCCESS - > : $token")
 
         mViewModel = ViewModelProviders.of(this)[RegisterViewModel::class.java]
         mViewModel.init()
@@ -102,15 +113,13 @@ class RegisterFragment : Fragment(), TextWatcher {
         )
             .observe(viewLifecycleOwner, Observer<ApiResponse<AccessToken>> {
                 when (it.status) {
-                    Status.SUCCESS -> {
+                    Status.SUCCESS ->
+                    {
                         tokenManager.saveToken(it.data)
                         controller().navigate(R.id.actionToMain)
                     }
                     Status.ERROR -> handleErrors(it.apiError)
                     else -> Log.e(TAG, "register FAILURE - > : " + it.apiException!!.localizedMessage)
-
-
-
                 }
                 binding.progressBar.visibility = View.GONE
             })
@@ -125,19 +134,6 @@ class RegisterFragment : Fragment(), TextWatcher {
         return isEmpty
     }
 
-//    private fun handleErrors(apiError: ApiError?) {
-//        for (error in apiError!!.errors.entries) {
-//            if (error.key == "name") {
-//                binding.tilName.setError(error.value.get(0))
-//            }
-//            if (error.key == "email") {
-//                binding.tilEmail.setError(error.value.get(0))
-//            }
-//            if (error.key == "password") {
-//                binding.tilPassword.setError(error.value.get(0))
-//            }
-//        }
-//    }
     private fun handleErrors(apiError: ApiError?){
         apiError!!.errors.entries.forEach{(key,value) ->
             when(key){
@@ -158,6 +154,8 @@ class RegisterFragment : Fragment(), TextWatcher {
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         binding.tilPassword.error = null
         binding.tilPasswordConfirm.error = null
+        binding.tilName.error = null
+        binding.edtEmail.error = null
     }
 
     private fun controller(): NavController {

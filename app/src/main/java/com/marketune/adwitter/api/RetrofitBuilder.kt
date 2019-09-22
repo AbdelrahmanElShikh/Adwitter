@@ -3,19 +3,17 @@ package com.marketune.adwitter.api
 import android.content.Context
 import android.util.Log
 import com.marketune.adwitter.models.TokenManager
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
-import okhttp3.ResponseBody
-
 
 
 /**
- * Created By Abdel-Rahman El-Shikh 19/9/2019
+ * @author: Abdel-Rahman El-Shikh :) 19/9/2019
  */
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class RetrofitBuilder {
     companion object {
         private const val BASE_URL = "http://192.168.1.10/adw/public/api/"
@@ -93,7 +91,6 @@ class RetrofitBuilder {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            Log.e(TAG,"converErrors -> $apiError")
             return apiError
         }
     }
