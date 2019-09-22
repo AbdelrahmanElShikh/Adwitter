@@ -4,13 +4,11 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.marketune.adwitter.api.ApiResponse
 import com.marketune.adwitter.api.RetrofitBuilder
+import com.marketune.adwitter.api.Status
 import com.marketune.adwitter.models.AccessToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.marketune.adwitter.api.Status
-import java.lang.Exception
-
 
 /**
  * @author: Abdel-Rahman El-Shikh 18/9/2019
@@ -51,7 +49,6 @@ class RegisterRepository {
                     apiResponse.apiError = RetrofitBuilder.convertErrors(response.errorBody())
                     registerResponse.value = apiResponse
                 }
-
             }
 
             override fun onFailure(call: Call<AccessToken>, t: Throwable) {
