@@ -88,6 +88,7 @@ class LoginFragment : Fragment(), TextWatcher {
                 Status.SUCCESS -> {
                     tokenManager.saveToken(it.data)
                     controller().navigate(R.id.actionToMain)
+                    activity!!.finish()
                 }
                 Status.ERROR -> Toast.makeText(
                     activity,

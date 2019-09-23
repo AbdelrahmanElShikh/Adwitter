@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Adwitter</string>
 
-    <!--splash screen-->
 
     <!-- Login Screen-->
     <string name="loginText_welcome">Welcome Back!</string>
@@ -29,9 +28,21 @@
 
     <!--common-->
     <string name="image">image</string>
+    <string name="logout">Log out</string>
+    <string name="navigation_drawer_open" translatable="false">navigation drawer open</string>
+    <string name="navigation_drawer_close" translatable="false">navigation drawer close</string>
 
     <!--Navigation drawer-->
     <string name="name">name</string>
     <string name="active">Active</string>
-    <string name="balance">Balance: %2$s</string>
+    <string name="balance">Balance: %1$s</string>
+
+    <!--accounts|home screen-->
+    <string name="home">Home</string>
+
+    <!--monitor screen-->
+    <string name="monitor">Monitor</string>
+
+
+
 </resources>

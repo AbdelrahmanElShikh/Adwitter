@@ -1,6 +1,5 @@
 package com.marketune.adwitter.api
 
-import android.content.Context
 import android.util.Log
 import com.marketune.adwitter.models.TokenManager
 import okhttp3.OkHttpClient
@@ -55,11 +54,7 @@ class RetrofitBuilder {
             return retrofit!!.create(ApiService::class.java)
         }
 
-        fun <T> createServiceWithAuth(
-            service: Class<T>,
-            tokenManager: TokenManager,
-            mContext: Context
-        ): T {
+        fun  createServiceWithAuth(tokenManager: TokenManager): ApiService {
 
             val newClient = client.newBuilder()
                 .addInterceptor { chain ->
@@ -78,13 +73,16 @@ class RetrofitBuilder {
                 }.build()
 
             val newRetrofit = retrofit!!.newBuilder().client(newClient).build()
-            return newRetrofit.create(service)
+            return newRetrofit.create(ApiService::class.java)
 
         }
 
         fun convertErrors(response: ResponseBody?): ApiError? {
             val converter =
-                retrofit!!.responseBodyConverter<ApiError>(ApiError::class.java, arrayOfNulls<Annotation>(0))
+                retrofit!!.responseBodyConverter<ApiError>(
+                    ApiError::class.java,
+                    arrayOfNulls<Annotation>(0)
+                )
             var apiError: ApiError? = null
             try {
                 apiError = converter.convert(response)

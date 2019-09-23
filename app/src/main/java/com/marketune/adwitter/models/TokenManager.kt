@@ -34,7 +34,7 @@ class TokenManager private constructor(private var prefs: SharedPreferences) {
         editor.putString("ACCESS_TOKEN", token?.access_token).commit()
     }
 
-    fun deleteToken(token: AccessToken) {
+    fun deleteToken() {
         editor.remove("ACCESS_TOKEN").commit()
     }
 

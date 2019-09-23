@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_monitor"
+        android:icon="@drawable/ic_monitor"
+        android:title="@string/monitor" />
 
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/logout" />
 </menu>

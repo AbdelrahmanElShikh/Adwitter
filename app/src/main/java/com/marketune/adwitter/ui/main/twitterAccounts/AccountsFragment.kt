@@ -1,4 +1,4 @@
-package com.marketune.adwitter.ui.main
+package com.marketune.adwitter.ui.main.twitterAccounts
 
 import android.os.Bundle
 import android.view.LayoutInflater

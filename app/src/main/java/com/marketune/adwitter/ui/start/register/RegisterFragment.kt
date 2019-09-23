@@ -116,6 +116,7 @@ class RegisterFragment : Fragment(), TextWatcher {
                     {
                         tokenManager.saveToken(it.data)
                         controller().navigate(R.id.actionToMain)
+                        activity!!.finish()
                     }
                     Status.ERROR -> handleErrors(it.apiError)
                     else -> Log.e(TAG, "register FAILURE - > : " + it.apiException!!.localizedMessage)

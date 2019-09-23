@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">أدويتر</string>
+
+
     <!-- Login Screen-->
     <string name="loginText_welcome">مرحبا بعودتك !</string>
     <string name="textLogin_ready">هل انت مستعد للبدء الان؟</string>
@@ -21,11 +23,20 @@
 
     <!--Common-->
     <string name="image">صورة</string>
+    <string name="logout">تسجيل الخروج</string>
 
     <!--Navigation drawer-->
     <string name="name">الاسم</string>
     <string name="active">نشط</string>
     <string name="balance">الرصيد: %1$s</string>
+
+
+    <!--accounts|home screen-->
+    <string name="home">الرئيسية</string>
+
+    <!--monitor screen-->
+    <string name="monitor">التفاصيل</string>
+
 
 
 </resources>
