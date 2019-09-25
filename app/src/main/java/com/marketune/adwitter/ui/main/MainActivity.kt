@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -44,6 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activty_main)
+        setSupportActionBar(binding.toolbar)
         drawerLayout = binding.drawerLayout
         toggle = ActionBarDrawerToggle(
             this,
@@ -52,38 +52,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
+        drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        drawerLayout.addDrawerListener(toggle)
-        toggle.isDrawerIndicatorEnabled = false
-        val drawable = ResourcesCompat.getDrawable(
-            resources,
-            R.drawable.ic_humbrger,
-            this.theme
-        )
-        toggle.setHomeAsUpIndicator(drawable)
-        toggle.setToolbarNavigationClickListener {
-            if (drawerLayout.isDrawerVisible(GravityCompat.START)) {
-                drawerLayout.closeDrawer(GravityCompat.START)
-            } else {
-                drawerLayout.openDrawer(GravityCompat.START)
-            }
-        }
 
-
-        setSupportActionBar(binding.toolbar)
-        supportActionBar!!.setHomeButtonEnabled(false)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        supportActionBar!!.setHomeButtonEnabled(true)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(true)
-////        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_humbrger)
-//        toggle.isDrawerIndicatorEnabled = false
-//        binding.toolbar.setNavigationIcon(R.drawable.ic_humbrger)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_humbrger)
+
         val navigationView = binding.navView
         navHeaderBinding = NavHeaderBinding.bind(navigationView.getHeaderView(0))
         tokenManager = TokenManager.getInstance(this)
         getUser()
         navController = Navigation.findNavController(this, R.id.main_nav_host_fragment)
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        navigationView.itemIconTintList = null
+        //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(navigationView, navController)
         navigationView.setNavigationItemSelectedListener(this)
     }
@@ -125,7 +109,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         item.isChecked = true
         drawerLayout.closeDrawer(GravityCompat.START)
         when (item.itemId) {
-            R.id.nav_monitor -> Toast.makeText(this, "Monitor", Toast.LENGTH_SHORT).show()
+            R.id.nav_home -> navController.navigate(R.id.accountsFragment)
+            R.id.nav_monitor -> navController.navigate(R.id.monitorFragment)
+            R.id.nav_edt_bank_info -> navController.navigate(R.id.editBankInfoFragment)
+            R.id.nav_payment -> navController.navigate(R.id.paymentFragment)
+            R.id.nav_support -> openWhatsApp()
             R.id.nav_logout -> {
                 tokenManager.deleteToken()
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
@@ -134,5 +122,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             else -> Toast.makeText(this, "else", Toast.LENGTH_SHORT).show()
         }
         return true
+    }
+
+    private fun openWhatsApp() {
     }
 }

@@ -10,4 +10,19 @@
         android:name="com.marketune.adwitter.ui.main.twitterAccounts.AccountsFragment"
         android:label="@string/home"
         tools:layout="@layout/accounts_fragment"/>
+    <fragment
+        android:id="@+id/monitorFragment"
+        android:name="com.marketune.adwitter.ui.main.monitor.MonitorFragment"
+        android:label="@string/monitor"
+        tools:layout="@layout/monitor_fragment"/>
+    <fragment
+        android:id="@+id/editBankInfoFragment"
+        android:name="com.marketune.adwitter.ui.main.editBankInfo.EditBankInfoFragment"
+        android:label="EditBankInfoFragment"
+        tools:layout="@layout/edit_bank_info_fragment"/>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.marketune.adwitter.ui.main.payment.PaymentFragment"
+        android:label="PaymentFragment"
+        tools:layout="@layout/payment_tabs_fragment"/>
 </navigation>

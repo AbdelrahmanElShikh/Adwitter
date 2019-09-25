@@ -34,9 +34,20 @@
     <!--accounts|home screen-->
     <string name="home">الرئيسية</string>
 
+
     <!--monitor screen-->
     <string name="monitor">التفاصيل</string>
 
+
+    <!--bank information-->
+    <string name="bank_information">المعلومات البنكية</string>
+
+
+    <!--Payment and Financial-->
+    <string name="payment_and_financial">الدفع والحسابات</string>
+
+    <!--Call Support-->
+    <string name="call_support">إتصل بالدعم</string>
 
 
 </resources>

@@ -32,12 +32,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@android:color/white"
-        android:textSize="25sp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_profile"
-        tools:text="User Name"
+        tools:text="Abdel-rahman ebrahem"
         android:text="@{user.name}" />
 
     <ImageView
@@ -73,7 +73,7 @@
         android:layout_marginEnd="8dp"
         tools:text="balance"
         android:text="@{@string/balance(user.balance)}"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

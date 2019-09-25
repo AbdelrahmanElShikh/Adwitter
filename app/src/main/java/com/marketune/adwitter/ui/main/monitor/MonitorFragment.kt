@@ -1,4 +1,4 @@
-package com.marketune.adwitter.ui.main.twitterAccounts
+package com.marketune.adwitter.ui.main.monitor
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,20 +8,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.marketune.adwitter.R
-import com.marketune.adwitter.databinding.AccountsFragmentBinding
+import com.marketune.adwitter.databinding.MonitorFragmentBinding
 
 /**
- * Created By Abdel-Rahman El-Shikh
+ * Adwitter
+ * @author: Abdel-Rahman El-Shikh :) on 9/25/2019
  */
-class AccountsFragment : Fragment() {
-    private lateinit var binding: AccountsFragmentBinding
+class MonitorFragment : Fragment(){
+    private lateinit var binding: MonitorFragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.accounts_fragment,container,false)
-        (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.home)
+        binding = DataBindingUtil.inflate(inflater, R.layout.monitor_fragment,container,false)
+        (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.monitor)
 
         return binding.root
     }

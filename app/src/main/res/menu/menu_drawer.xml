@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
+
+    <item
         android:id="@+id/nav_monitor"
         android:icon="@drawable/ic_monitor"
         android:title="@string/monitor" />
+
+    <item
+        android:id="@+id/nav_edt_bank_info"
+        android:icon="@drawable/ic_edt_bank_ino"
+        android:title="@string/bank_information" />
+
+    <item
+        android:id="@+id/nav_payment"
+        android:icon="@drawable/ic_payment"
+        android:title="@string/payment_and_financial" />
+
+    <item
+        android:id="@+id/nav_support"
+        android:icon="@drawable/ic_whatsapp"
+        android:title="@string/call_support" />
 
     <item
         android:id="@+id/nav_logout"

@@ -43,6 +43,16 @@
     <!--monitor screen-->
     <string name="monitor">Monitor</string>
 
+    <!--bank information-->
+    <string name="bank_information">Bank Information</string>
+
+    <!--Payment and Financial-->
+    <string name="payment_and_financial">Payment and Financial</string>
+
+    <!--Call Support-->
+    <string name="call_support">Call Support</string>
+
+
 
 
 </resources>
