@@ -62,4 +62,7 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //google sign in
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
 }
