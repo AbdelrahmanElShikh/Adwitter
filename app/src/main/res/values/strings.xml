@@ -10,6 +10,10 @@
     <string name="signin">Sign in</string>
     <string name="or">OR</string>
     <string name="dont_have_account">Don\'t have an account yet?</string>
+    <string name="google" translatable="false">google</string>
+    <string name="twitter" translatable="false">twitter</string>
+    <string name="facebook" translatable="false">facebook</string>
+
 
 
     <!--Register Screen-->
@@ -32,6 +36,8 @@
     <string name="navigation_drawer_open" translatable="false">navigation drawer open</string>
     <string name="navigation_drawer_close" translatable="false">navigation drawer close</string>
 
+
+
     <!--Navigation drawer-->
     <string name="name">name</string>
     <string name="active">Active</string>
@@ -51,8 +57,6 @@
 
     <!--Call Support-->
     <string name="call_support">Call Support</string>
-
-
 
 
 </resources>

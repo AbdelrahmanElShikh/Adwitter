@@ -23,4 +23,23 @@ class LoginViewModel : ViewModel() {
         response = instance.login(userName = userName, password = password,fcmToken = fcmToken)
         return response
     }
+
+    fun googleSocialLogin(
+        name: String,
+        email: String,
+        provider: String,
+        providerId: String,
+        fcmToken: String,
+        imageUrl: String
+    ):LiveData<ApiResponse<AccessToken>>{
+        response = instance.googleSocialLogin(
+            name = name,
+            email = email,
+            provider = provider,
+            providerId = providerId,
+            fcmToken = fcmToken,
+            imageUri = imageUrl
+        )
+        return response
+    }
 }

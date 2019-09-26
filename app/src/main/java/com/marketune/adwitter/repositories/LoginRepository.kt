@@ -27,10 +27,39 @@ class LoginRepository {
         password: String,
         fcmToken: String
     ): MutableLiveData<ApiResponse<AccessToken>> {
-        val requestHandler = object : RequestHandler<AccessToken>(){
+        val requestHandler = object : RequestHandler<AccessToken>() {
             override fun makeRequest(): Call<AccessToken> {
-                return apiService.login(userName = userName,password = password,fcmToken = fcmToken)
+                return apiService.login(
+                    userName = userName,
+                    password = password,
+                    fcmToken = fcmToken
+                )
             }
+        }
+        requestHandler.doRequest()
+        return requestHandler.getApiResponse()
+    }
+
+    fun googleSocialLogin(
+        name: String,
+        email: String,
+        provider: String,
+        providerId: String,
+        fcmToken: String,
+        imageUri: String
+    ): MutableLiveData<ApiResponse<AccessToken>> {
+        val requestHandler = object : RequestHandler<AccessToken>() {
+            override fun makeRequest(): Call<AccessToken> {
+                return apiService.socialLogin(
+                    name = name,
+                    email = email,
+                    provider = provider,
+                    provider_id = providerId,
+                    fcmToken = fcmToken,
+                    imageUri = imageUri
+                )
+            }
+
         }
         requestHandler.doRequest()
         return requestHandler.getApiResponse()

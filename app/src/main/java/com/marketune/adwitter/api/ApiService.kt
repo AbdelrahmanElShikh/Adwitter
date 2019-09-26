@@ -30,6 +30,31 @@ interface ApiService {
         @Field("fcm_token") fcmToken: String
     ):Call<AccessToken>
 
+    //For Google AccessToken
+    @POST("social_auth")
+    @FormUrlEncoded
+    fun socialLogin(@Field("name") name: String,
+                    @Field("email") email: String,
+                    @Field("provider")provider:String,
+                    @Field("provider_id") provider_id: String,
+                    @Field("fcm_token") fcmToken: String,
+                    @Field("avatar") imageUri: String
+    ):Call<AccessToken>
+
+    //For twitter or facebook AccessToken
+    @POST("social_auth")
+    @FormUrlEncoded
+    fun socialLogin(@Field("name") name: String,
+                    @Field("email") email: String,
+                    @Field("provider")provider:String,
+                    @Field("provider_id") provider_id: String,
+                    @Field("fcm_token") fcmToken: String,
+                    @Field("avatar") imageUri: String,
+                    @Field("oauth_token") oauthToken :String,
+                    @Field("oauth_secret") oauthSecret:String,
+                    @Field("followers")followers: Int
+    ):Call<AccessToken>
+
     @GET("user")
     fun getUserInfo():Call<User>
 
