@@ -64,7 +64,6 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
     }
 
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.e("LoginFragment","Activity Result2")
         googleHelper.onActivityResult(requestCode, resultCode, data)
     }
 

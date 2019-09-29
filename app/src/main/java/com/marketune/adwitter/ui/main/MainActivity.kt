@@ -1,5 +1,6 @@
 package com.marketune.adwitter.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.material.navigation.NavigationView
 import com.marketune.adwitter.R
 import com.marketune.adwitter.api.Status
@@ -39,6 +43,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var mViewModel: UserViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var toggle: ActionBarDrawerToggle
+    //google variables
+    private lateinit var googleApiClient: GoogleApiClient
+    private lateinit var googleSignInOptions: GoogleSignInOptions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +77,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(navigationView, navController)
         navigationView.setNavigationItemSelectedListener(this)
+        //google variable initialization
+        googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        googleApiClient = GoogleApiClient.Builder(this)
+            .addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions)
+            .build()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        googleApiClient.connect()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        googleApiClient.disconnect()
     }
 
     private fun getUser() {
@@ -113,17 +138,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_monitor -> navController.navigate(R.id.monitorFragment)
             R.id.nav_edt_bank_info -> navController.navigate(R.id.editBankInfoFragment)
             R.id.nav_payment -> navController.navigate(R.id.paymentFragment)
-            R.id.nav_support -> openWhatsApp()
-            R.id.nav_logout -> {
-                tokenManager.deleteToken()
-                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-                finish()
-            }
+            R.id.nav_support -> openWhatsApp(this)
+            R.id.nav_logout -> {socialLogOut()}
             else -> Toast.makeText(this, "else", Toast.LENGTH_SHORT).show()
         }
         return true
     }
 
-    private fun openWhatsApp() {
+    private fun openWhatsApp(context: Context) {
+
+
+    }
+    private fun socialLogOut(){
+        if(Auth.GoogleSignInApi != null){
+            Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback { status ->
+                if(status.isSuccess)
+                    deleteTokenAndNavigate()
+             }
+        }
+    }
+
+    private fun deleteTokenAndNavigate() {
+        tokenManager.deleteToken()
+        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+        finish()
+
     }
 }

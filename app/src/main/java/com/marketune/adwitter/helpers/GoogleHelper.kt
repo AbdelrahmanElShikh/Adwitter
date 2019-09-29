@@ -29,9 +29,6 @@ class GoogleHelper constructor(
     private lateinit var googleSignInClient: GoogleSignInClient
 
     init {
-//        if (mListener == null) {
-//            throw RuntimeException("GoogleAuthResponse listener cannot be null.")
-//        }
         buildGoogleSignInClient(buildSignInOptions())
     }
 
@@ -59,7 +56,6 @@ class GoogleHelper constructor(
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.e("TAG","google helper")
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
