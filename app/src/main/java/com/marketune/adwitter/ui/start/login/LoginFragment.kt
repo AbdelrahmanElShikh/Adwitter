@@ -166,7 +166,6 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
         ).observe(viewLifecycleOwner, Observer {
             when(it.status){
                 Status.SUCCESS->{
-                    Log.e(TAG,user.toString())
                     tokenManager.saveToken(it.data)
                     controller().navigate(R.id.actionToMain)
                     activity!!.finish()

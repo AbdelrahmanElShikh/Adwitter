@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when (it.status) {
                 Status.SUCCESS -> {
                     navHeaderBinding.user = it.data
-                    Log.e(TAG,it.data?.avatar)
                     Picasso.get().load(it.data!!.avatar)
                         .placeholder(getDrawable(R.drawable.ic_owner)!!)
                         .into(navHeaderBinding.imageProfile)
