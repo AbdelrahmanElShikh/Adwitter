@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -44,7 +43,7 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        googleHelper = GoogleHelper(context as FragmentActivity, this)
+        googleHelper = GoogleHelper(activity!!,this, this)
     }
 
     override fun onCreateView(
@@ -64,8 +63,8 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
         return binding.root
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.e("LoginFragment","Activity Result2")
         googleHelper.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -151,6 +150,7 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
      *  handle Google SignIn success or failure.
      */
     override fun onGoogleAuthSignIn(user: GoogleUser) {
+        this.user = user
         getFcmToken(GOOGLE_LOGIN_FCM_TOKEN)
     }
 
@@ -166,6 +166,7 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
         ).observe(viewLifecycleOwner, Observer {
             when(it.status){
                 Status.SUCCESS->{
+                    Log.e(TAG,user.toString())
                     tokenManager.saveToken(it.data)
                     controller().navigate(R.id.actionToMain)
                     activity!!.finish()

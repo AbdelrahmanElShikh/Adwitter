@@ -59,4 +59,9 @@
     <string name="call_support">Call Support</string>
 
 
+
+    <!-- API KEYS-->
+    <string name="GOOGLE_SERVER_CLIENT_ID" translatable="false">770152989571-prgbv3932o2dq7heb5559dpvhfb9adqs.apps.googleusercontent.com</string>
+
+
 </resources>

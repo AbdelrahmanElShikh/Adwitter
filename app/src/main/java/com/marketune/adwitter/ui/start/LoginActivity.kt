@@ -1,8 +1,9 @@
 package com.marketune.adwitter.ui.start
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.marketune.adwitter.R
+
 
 class LoginActivity : AppCompatActivity() {
 

@@ -3,6 +3,7 @@ package com.marketune.adwitter.helpers
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.util.Log
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -10,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.marketune.adwitter.R
 import com.marketune.adwitter.models.GoogleUser
 
 /**
@@ -21,6 +23,7 @@ private const val RC_SIGN_IN = 500
 
 class GoogleHelper constructor(
     private var mContext: FragmentActivity,
+    private val fragmentContext : Fragment,
     private var mListener: GoogleAuthResponse
 ) {
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -37,6 +40,7 @@ class GoogleHelper constructor(
             .requestEmail()
             .requestProfile()
             .requestId()
+            .requestIdToken(mContext.getString(R.string.GOOGLE_SERVER_CLIENT_ID))
         /**
          *TODO :signInOptions.requestIdToken(GoogleKeys.GOOGLE_SERVER_CLIENT_ID);
          * If your app authenticates with a backend server or accesses Google APIs from your backend server,
@@ -51,10 +55,11 @@ class GoogleHelper constructor(
 
     fun performSignIn() {
         val signInIntent = googleSignInClient.signInIntent
-        mContext.startActivityForResult(signInIntent, RC_SIGN_IN)
+        fragmentContext.startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.e("TAG","google helper")
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
