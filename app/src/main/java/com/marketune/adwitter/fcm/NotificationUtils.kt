@@ -49,10 +49,10 @@ class NotificationUtils {
              * Here we are building the notification and setting it's content
              *  PARAM -> (CHANNEL_ID) Will be ignored with devices below Android Oreo
              */
+            //TODO : Please Note that adwitter logo is not shown properly.
             val builder = NotificationCompat.Builder(context, CHANNEL_ID)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-                .setSmallIcon(R.drawable.ic_adwitter_icon_white)
-                .setLargeIcon(largeIcon(context))
+                .setSmallIcon(R.drawable.ic_home)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(body))

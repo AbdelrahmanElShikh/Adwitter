@@ -11,10 +11,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-        val message : Map<String,String> = remoteMessage.data
-        val title= message.get("title")
-        val body = message.get("body")
-        NotificationUtils.notifyUser(this, title, body)
+        if (remoteMessage.data.isNotEmpty()) {
+            val message: Map<String, String> = remoteMessage.data
+            val title = message["title"]
+            val body = message["body"]
+            NotificationUtils.notifyUser(this, title, body)
+        } else if (remoteMessage.notification != null) {
+            val title = remoteMessage.notification!!.title
+            val body = remoteMessage.notification!!.body
+            NotificationUtils.notifyUser(this, title, body)
+        }
+
     }
 
     override fun onNewToken(token: String) {
