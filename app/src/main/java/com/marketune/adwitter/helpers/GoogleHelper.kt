@@ -38,11 +38,6 @@ class GoogleHelper constructor(
             .requestProfile()
             .requestId()
             .requestIdToken(mContext.getString(R.string.GOOGLE_SERVER_CLIENT_ID))
-        /**
-         *TODO :signInOptions.requestIdToken(GoogleKeys.GOOGLE_SERVER_CLIENT_ID);
-         * If your app authenticates with a backend server or accesses Google APIs from your backend server,
-         * you must get the OAuth 2.0 client ID that was created for your server.
-         */
         return signInOptions.build()
     }
 
@@ -71,8 +66,6 @@ class GoogleHelper constructor(
             val googleSignInAccount = task!!.getResult(ApiException::class.java)
             mListener.onGoogleAuthSignIn(parseToGoogleUser(googleSignInAccount!!))
         } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.statusCode + e.message)
         }
     }

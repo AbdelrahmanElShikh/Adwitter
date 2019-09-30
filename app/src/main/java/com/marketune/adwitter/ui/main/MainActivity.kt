@@ -162,6 +162,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         tokenManager.deleteToken()
         startActivity(Intent(this@MainActivity, LoginActivity::class.java))
         finish()
-
     }
 }

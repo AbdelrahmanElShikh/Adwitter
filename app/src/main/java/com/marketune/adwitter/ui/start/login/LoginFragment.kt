@@ -18,11 +18,16 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.marketune.adwitter.R
+import com.marketune.adwitter.api.ApiResponse
 import com.marketune.adwitter.api.Status
 import com.marketune.adwitter.databinding.LoginFragmentBinding
 import com.marketune.adwitter.helpers.GoogleHelper
+import com.marketune.adwitter.helpers.TwitterAuthResponse
+import com.marketune.adwitter.helpers.TwitterHelper
+import com.marketune.adwitter.models.AccessToken
 import com.marketune.adwitter.models.GoogleUser
 import com.marketune.adwitter.models.TokenManager
+import com.marketune.adwitter.models.TwitterUser
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 
 /**
@@ -32,18 +37,27 @@ import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 private const val TAG = "LoginFragment"
 private const val REGULAR_LOGIN_FCM_TOKEN = 0
 private const val GOOGLE_LOGIN_FCM_TOKEN = 1
+private const val TWITTER_LOGIN_FCM_TOKEN = 2
 
-class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
+
+class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse,
+    TwitterAuthResponse {
+
+
     private lateinit var binding: LoginFragmentBinding
     private lateinit var mViewModel: LoginViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var googleHelper: GoogleHelper
-    private lateinit var user: GoogleUser
+    private lateinit var twitterHelper: TwitterHelper
+    private lateinit var googleUser: GoogleUser
+    private lateinit var twitterUser: TwitterUser
+    private lateinit var observer: Observer<ApiResponse<AccessToken>>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        googleHelper = GoogleHelper(activity!!,this, this)
+        googleHelper = GoogleHelper(activity!!, this, this)
+        twitterHelper = TwitterHelper(activity!!,this,this,getString(R.string.twitterApaiKey),getString(R.string.twitterSecretKey))
     }
 
     override fun onCreateView(
@@ -59,12 +73,37 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
         binding.goToRegister.setOnClickListener { controller().navigate(R.id.action_login_fragment_to_registerFragment) }
         binding.btnLogin.setOnClickListener { login() }
         binding.googleLogin.setOnClickListener { googleHelper.performSignIn() }
+        binding.twitterLogin.setOnClickListener{ twitterHelper.performSignIn() }
         tokenManager = TokenManager.getInstance(context)
+        observer = Observer {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    tokenManager.saveToken(it.data)
+                    controller().navigate(R.id.actionToMain)
+                    activity!!.finish()
+                }
+                Status.ERROR -> Toast.makeText(
+                    activity,
+                    it.apiError!!.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+                Status.FAILURE -> {
+                    Log.e(
+                        TAG,
+                        "login : ${it.apiException!!.localizedMessage}"
+                    )
+                    Toast.makeText(activity, it.apiException!!.localizedMessage, Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+            binding.progressBar.visibility = View.GONE
+        }
         return binding.root
     }
 
-     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         googleHelper.onActivityResult(requestCode, resultCode, data)
+        twitterHelper.onActivityResult(requestCode,resultCode,data)
     }
 
     private fun login() {
@@ -91,9 +130,10 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
                     return@OnCompleteListener
                 }
                 val token = task.result!!.token
-                when(loginType){
-                    0-> loginFromBackEnd(token)
-                    1 ->getGoogleToken(token)
+                when (loginType) {
+                    0 -> loginFromBackEnd(token)
+                    1 -> getGoogleToken(token)
+                    2 -> getTwitterToken(token)
                     else -> {
                         //Do nth for now
                     }
@@ -109,28 +149,7 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
             binding.edtEmail.text.toString(),
             binding.edtPassword.text.toString(),
             token
-        ).observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    tokenManager.saveToken(it.data)
-                    controller().navigate(R.id.actionToMain)
-                    activity!!.finish()
-                }
-                Status.ERROR -> Toast.makeText(
-                    activity,
-                    it.apiError!!.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-                Status.FAILURE ->{
-                    Log.e(
-                        TAG,
-                        "loginFromBackEnd : ${it.apiException!!.localizedMessage}"
-                    )
-                    Toast.makeText(activity, it.apiException!!.localizedMessage,Toast.LENGTH_SHORT).show()
-                }
-                }
-            binding.progressBar.visibility = View.GONE
-        })
+        ).observe(viewLifecycleOwner, observer)
 
     }
 
@@ -149,47 +168,50 @@ class LoginFragment : Fragment(), TextWatcher, GoogleHelper.GoogleAuthResponse {
      *  handle Google SignIn success or failure.
      */
     override fun onGoogleAuthSignIn(user: GoogleUser) {
-        this.user = user
+        this.googleUser = user
         getFcmToken(GOOGLE_LOGIN_FCM_TOKEN)
     }
 
-    private fun getGoogleToken(token :String) {
+    private fun getGoogleToken(token: String) {
         binding.progressBar.visibility = View.VISIBLE
         mViewModel.googleSocialLogin(
-            name = user.name,
-            email = user.email,
+            name = googleUser.name,
+            email = googleUser.email,
             provider = getString(R.string.google),
-            providerId = user.id,
+            providerId = googleUser.id,
             fcmToken = token,
-            imageUrl = user.photoUri.toString()
-        ).observe(viewLifecycleOwner, Observer {
-            when(it.status){
-                Status.SUCCESS->{
-                    tokenManager.saveToken(it.data)
-                    controller().navigate(R.id.actionToMain)
-                    activity!!.finish()
-                }
-                Status.ERROR -> Toast.makeText(
-                    activity,
-                    it.apiError!!.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-                Status.FAILURE ->{
-                    Log.e(
-                        TAG,
-                        "loginFromBackEnd : ${it.apiException!!.localizedMessage}"
-                    )
-                    Toast.makeText(activity, it.apiException!!.localizedMessage,Toast.LENGTH_SHORT).show()
-                }
-            }
-            binding.progressBar.visibility = View.GONE
-        })
+            imageUri = googleUser.photoUri.toString()
+        ).observe(viewLifecycleOwner, observer)
 
+    }
+
+    private fun getTwitterToken(token: String) {
+        mViewModel.socialLogin(
+            name = twitterUser.name,
+            email = twitterUser.email,
+            provider = getString(R.string.twitter),
+            providerId = twitterUser.id,
+            fcmToken = token,
+            imageUri = twitterUser.profileImageUrl,
+            oauthToken = twitterUser.token,
+            oauthSecret = twitterUser.secret,
+            followers = twitterUser.followersCount
+            ).observe(viewLifecycleOwner, observer)
     }
 
     override fun onGoogleAuthSignInFailed() {
         Toast.makeText(activity, "Google sign in failed.", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onTwitterError() {
+        Toast.makeText(activity, "Twitter sign in failed.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onTwitterProfileReceived(user: TwitterUser) {
+        this.twitterUser = user
+        getFcmToken(TWITTER_LOGIN_FCM_TOKEN)
+    }
+
 
     private fun controller(): NavController {
         return NavHostFragment.findNavController(this)

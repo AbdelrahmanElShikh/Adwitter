@@ -30,7 +30,7 @@ class LoginViewModel : ViewModel() {
         provider: String,
         providerId: String,
         fcmToken: String,
-        imageUrl: String
+        imageUri: String
     ):LiveData<ApiResponse<AccessToken>>{
         response = instance.googleSocialLogin(
             name = name,
@@ -38,8 +38,33 @@ class LoginViewModel : ViewModel() {
             provider = provider,
             providerId = providerId,
             fcmToken = fcmToken,
-            imageUri = imageUrl
+            imageUri = imageUri
         )
         return response
     }
+    fun socialLogin(name: String,
+                    email: String,
+                    provider: String,
+                    providerId: String,
+                    fcmToken: String,
+                    imageUri: String,
+                    oauthToken :String,
+                    oauthSecret:String,
+                    followers: Int
+    ):LiveData<ApiResponse<AccessToken>>{
+        response = instance.socialLogin(
+            name = name,
+            email = email,
+            provider = provider,
+            providerId = providerId,
+            fcmToken = fcmToken,
+            imageUri = imageUri,
+            oauthToken = oauthToken,
+            oauthSecret = oauthSecret,
+            followers = followers
+            )
+        return response
+    }
+
+
 }

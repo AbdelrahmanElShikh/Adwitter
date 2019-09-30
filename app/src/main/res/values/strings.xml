@@ -62,6 +62,8 @@
 
     <!-- API KEYS-->
     <string name="GOOGLE_SERVER_CLIENT_ID" translatable="false">770152989571-prgbv3932o2dq7heb5559dpvhfb9adqs.apps.googleusercontent.com</string>
+    <string name="twitterApaiKey" translatable="false">urPgsHNnrz7QTl0XqOUhI56cq</string>
+    <string name="twitterSecretKey" translatable="false">YQR3wftU1hSPh6qiwOa9Zl1E49JRjAmrTxcfYhkGTuvEhVSTAP</string>
 
 
 </resources>

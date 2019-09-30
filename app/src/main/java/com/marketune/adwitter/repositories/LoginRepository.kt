@@ -64,4 +64,35 @@ class LoginRepository {
         requestHandler.doRequest()
         return requestHandler.getApiResponse()
     }
+
+    fun socialLogin(
+        name: String,
+        email: String,
+        provider: String,
+        providerId: String,
+        fcmToken: String,
+        imageUri: String,
+        oauthToken :String,
+        oauthSecret:String,
+        followers: Int
+    ):MutableLiveData<ApiResponse<AccessToken>>{
+        val requestHandler = object :RequestHandler<AccessToken>(){
+            override fun makeRequest(): Call<AccessToken> {
+                return  apiService.socialLogin(
+                    name = name,
+                    email = email,
+                    provider = provider,
+                    provider_id = providerId,
+                    fcmToken = fcmToken,
+                    imageUri = imageUri,
+                    oauthToken =  oauthToken,
+                    oauthSecret = oauthSecret,
+                    followers = followers
+                )
+            }
+
+        }
+        requestHandler.doRequest()
+        return requestHandler.getApiResponse()
+    }
 }
