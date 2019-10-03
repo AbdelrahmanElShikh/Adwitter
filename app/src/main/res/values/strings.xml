@@ -35,6 +35,8 @@
     <string name="logout">Log out</string>
     <string name="navigation_drawer_open" translatable="false">navigation drawer open</string>
     <string name="navigation_drawer_close" translatable="false">navigation drawer close</string>
+    <string name="normal">normal</string>
+    <string name="twitter_image_size" translatable="false">400x400</string>
 
 
 

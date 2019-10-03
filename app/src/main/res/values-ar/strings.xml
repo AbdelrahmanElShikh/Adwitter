@@ -48,6 +48,7 @@
 
     <!--Call Support-->
     <string name="call_support">إتصل بالدعم</string>
+    <string name="normal">طبيعي</string>
 
 
 </resources>
