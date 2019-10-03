@@ -36,7 +36,7 @@ class RetrofitBuilder {
             val builder = OkHttpClient.Builder()
                 .addInterceptor { chain ->
                     var request = chain.request()
-                    Log.e(TAG, "intercept: $BASE_URL")
+                    Log.d(TAG, "intercept: $BASE_URL")
                     val builder = request.newBuilder()
                         .addHeader("Accept", "application/json")
                         .addHeader("Connection", "close")

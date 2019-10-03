@@ -101,7 +101,6 @@ class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthR
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("LoginFragment", "onActivityResult inside fragment")
         googleHelper.onActivityResult(requestCode, resultCode, data)
         twitterHelper.onActivityResult(requestCode, resultCode, data)
     }

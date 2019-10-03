@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.material.navigation.NavigationView
@@ -27,6 +28,7 @@ import com.marketune.adwitter.databinding.NavHeaderBinding
 import com.marketune.adwitter.models.TokenManager
 import com.marketune.adwitter.ui.start.login.LoginActivity
 import com.squareup.picasso.Picasso
+import com.twitter.sdk.android.core.TwitterCore
 
 
 /**
@@ -150,17 +152,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
     private fun socialLogOut(){
-        if(Auth.GoogleSignInApi != null){
-            Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback { status ->
-                if(status.isSuccess)
-                    deleteTokenAndNavigate()
-             }
+        when {
+            isGoogleUserSignIn() -> {
+                Log.e("MainActivity","Signing out from Google")
+                Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback { status ->
+                    if(status.isSuccess)
+                        deleteTokenAndNavigate()
+                }
+            }
+            isTwitterSessionActive() -> {
+                Log.w("MainActivity","Signing out from Twitter")
+                TwitterCore.getInstance().sessionManager.clearActiveSession()
+                deleteTokenAndNavigate()
+            }
+            else -> deleteTokenAndNavigate()
         }
+
+
     }
 
     private fun deleteTokenAndNavigate() {
         tokenManager.deleteToken()
         startActivity(Intent(this@MainActivity, LoginActivity::class.java))
         finish()
+    }
+    private fun isGoogleUserSignIn():Boolean{
+        return GoogleSignIn.getLastSignedInAccount(this) != null
+    }
+    private fun isTwitterSessionActive():Boolean{
+        val twitterSession = TwitterCore.getInstance().sessionManager.activeSession
+        return twitterSession!=null
     }
 }
