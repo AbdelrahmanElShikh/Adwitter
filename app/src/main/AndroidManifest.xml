@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.start.LoginActivity"
+        <activity android:name=".ui.start.splash.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,6 +25,13 @@
         <activity
             android:name=".ui.main.MainActivity"
             />
+        <activity
+            android:name=".ui.start.login.LoginActivity"
+            />
+        <activity
+            android:name=".ui.start.register.RegisterActivity"
+            />
+
         <service
             android:name=".fcm.MyFirebaseMessagingService"
             android:exported="false">

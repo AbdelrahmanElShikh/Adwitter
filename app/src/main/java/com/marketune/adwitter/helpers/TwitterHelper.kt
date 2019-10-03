@@ -3,7 +3,6 @@ package com.marketune.adwitter.helpers
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
-import androidx.fragment.app.Fragment
 import com.marketune.adwitter.models.TwitterUser
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
@@ -18,7 +17,6 @@ private const val TAG = "TwitterHelper"
 
 class TwitterHelper constructor(
     private var mContext: Activity,
-    private var fragmentContext :Fragment,
     private var mListener: TwitterAuthResponse,
     twitterApiKey:String,
     twitterSecretKey:String
@@ -40,7 +38,7 @@ class TwitterHelper constructor(
 
 
     fun performSignIn() {
-        mAuthClient.authorize(fragmentContext, object : Callback<TwitterSession>() {
+        mAuthClient.authorize(mContext, object : Callback<TwitterSession>() {
             override fun success(result: Result<TwitterSession>?) {
                 val session = result!!.data
                 getUserData()
@@ -73,8 +71,6 @@ class TwitterHelper constructor(
                 user.email = resultInfo.email
                 user.descripton = resultInfo.description
                 user.profileImageUrl = resultInfo.profileImageUrl
-                user.bannerUrl = resultInfo.profileBannerUrl
-                user.language = resultInfo.lang
                 user.token = authToken.token
                 user.secret = authToken.secret
                 user.followersCount = resultInfo.followersCount

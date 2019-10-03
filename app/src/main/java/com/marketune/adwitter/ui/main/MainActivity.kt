@@ -25,7 +25,7 @@ import com.marketune.adwitter.api.Status
 import com.marketune.adwitter.databinding.ActivtyMainBinding
 import com.marketune.adwitter.databinding.NavHeaderBinding
 import com.marketune.adwitter.models.TokenManager
-import com.marketune.adwitter.ui.start.LoginActivity
+import com.marketune.adwitter.ui.start.login.LoginActivity
 import com.squareup.picasso.Picasso
 
 

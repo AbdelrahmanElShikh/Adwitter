@@ -3,7 +3,6 @@ package com.marketune.adwitter.helpers
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.util.Log
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -23,7 +22,6 @@ private const val RC_SIGN_IN = 500
 
 class GoogleHelper constructor(
     private var mContext: FragmentActivity,
-    private val fragmentContext : Fragment,
     private var mListener: GoogleAuthResponse
 ) {
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -47,7 +45,7 @@ class GoogleHelper constructor(
 
     fun performSignIn() {
         val signInIntent = googleSignInClient.signInIntent
-        fragmentContext.startActivityForResult(signInIntent, RC_SIGN_IN)
+        mContext.startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

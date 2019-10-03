@@ -1,18 +1,15 @@
 package com.marketune.adwitter.ui.start.register
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.iid.FirebaseInstanceId
@@ -20,9 +17,11 @@ import com.marketune.adwitter.R
 import com.marketune.adwitter.api.ApiError
 import com.marketune.adwitter.api.ApiResponse
 import com.marketune.adwitter.api.Status
-import com.marketune.adwitter.databinding.RegisterFragmentBinding
+import com.marketune.adwitter.databinding.RegisterActivityBinding
 import com.marketune.adwitter.models.AccessToken
 import com.marketune.adwitter.models.TokenManager
+import com.marketune.adwitter.ui.main.MainActivity
+import com.marketune.adwitter.ui.start.login.LoginActivity
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validEmail
 
@@ -31,27 +30,28 @@ import com.wajahatkarim3.easyvalidation.core.view_ktx.validEmail
  */
 private const val TAG = "RegisterFragment"
 
-class RegisterFragment : Fragment(), TextWatcher {
+class RegisterActivity : AppCompatActivity(), TextWatcher {
 
-    private lateinit var binding: RegisterFragmentBinding
+    private lateinit var binding: RegisterActivityBinding
     private lateinit var mViewModel: RegisterViewModel
     private lateinit var tokenManager: TokenManager
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.register_fragment, container, false)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.register_activity)
         binding.edtPassword.addTextChangedListener(this)
         binding.edtConfirmPassword.addTextChangedListener(this)
         binding.edtUserName.addTextChangedListener(this)
         binding.edtEmail.addTextChangedListener(this)
         binding.btnRegister.setOnClickListener { register() }
-        binding.btnBack.setOnClickListener { controller().navigate(R.id.action_registerFragment_to_login_fragment) }
-        tokenManager = TokenManager.getInstance(context)
-        return binding.root
+        binding.btnBack.setOnClickListener { goToLoginActivity() }
+        tokenManager = TokenManager.getInstance(this)
     }
+
+    private fun goToLoginActivity() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        this.finish()
+    }
+
 
     /**
      * applying data validation on the user input and then,
@@ -60,7 +60,7 @@ class RegisterFragment : Fragment(), TextWatcher {
     private fun register() {
         var isValidData = true
         if (!(checkEmpty(binding.edtUserName) || checkEmpty(binding.edtEmail))) {
-            if(Character.isDigit(binding.edtUserName.text!![0])){
+            if (Character.isDigit(binding.edtUserName.text!![0])) {
                 isValidData = false
                 binding.tilName.error = getString(R.string.start_number_error)
 
@@ -110,19 +110,25 @@ class RegisterFragment : Fragment(), TextWatcher {
             binding.edtPassword.text.toString(),
             token
         )
-            .observe(viewLifecycleOwner, Observer<ApiResponse<AccessToken>> {
+            .observe(this, Observer<ApiResponse<AccessToken>> {
                 when (it.status) {
-                    Status.SUCCESS ->
-                    {
+                    Status.SUCCESS -> {
                         tokenManager.saveToken(it.data)
-                        controller().navigate(R.id.actionToMain)
-                        activity!!.finish()
+                        goToMainActivity()
                     }
                     Status.ERROR -> handleErrors(it.apiError)
-                    else -> Log.e(TAG, "register FAILURE - > : " + it.apiException!!.localizedMessage)
+                    else -> Log.e(
+                        TAG,
+                        "register FAILURE - > : " + it.apiException!!.localizedMessage
+                    )
                 }
                 binding.progressBar.visibility = View.GONE
             })
+    }
+
+    private fun goToMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+        this.finish()
     }
 
     private fun checkEmpty(edtText: TextInputEditText): Boolean {
@@ -134,11 +140,11 @@ class RegisterFragment : Fragment(), TextWatcher {
         return isEmpty
     }
 
-    private fun handleErrors(apiError: ApiError?){
-        apiError!!.errors.entries.forEach{(key,value) ->
-            when(key){
-                "name"-> binding.tilName.error = value[0]
-                "email"->binding.tilEmail.error = value[0]
+    private fun handleErrors(apiError: ApiError?) {
+        apiError!!.errors.entries.forEach { (key, value) ->
+            when (key) {
+                "name" -> binding.tilName.error = value[0]
+                "email" -> binding.tilEmail.error = value[0]
                 else -> binding.tilPassword.error = value[0]
 
             }
@@ -158,14 +164,12 @@ class RegisterFragment : Fragment(), TextWatcher {
         binding.edtEmail.error = null
     }
 
-    private fun controller(): NavController {
-        return NavHostFragment.findNavController(this)
+    override fun onBackPressed() {
+        super.onBackPressed()
+        goToLoginActivity()
     }
 }
-/**
- * Notes : In the "Observe" method i used (viewLifecycleOwner) instead of (this) so,
- * that LiveData will remove observers every time the fragment’s view is destroyed
- */
+
 
 
 
