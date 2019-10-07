@@ -1,5 +1,7 @@
 package com.marketune.adwitter.helpers
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.facebook.CallbackManager
@@ -72,6 +74,14 @@ class FacebookHelper constructor(
         }
         return user
 
+    }
+
+     fun performSignIn(activity: Activity){
+        LoginManager.getInstance().logInWithReadPermissions(activity, listOf("public_profile", "email"))
+    }
+
+    fun onActivityResult(requestCode:Int,resultCode:Int,data: Intent?){
+        mCallbackManager.onActivityResult(requestCode,resultCode,data)
     }
 
     interface FacebookResponse {

@@ -24,7 +24,7 @@ class LoginViewModel : ViewModel() {
         return response
     }
 
-    fun googleSocialLogin(
+    fun socialLogin(
         name: String,
         email: String,
         provider: String,

@@ -17,16 +17,16 @@ import com.marketune.adwitter.R
 import com.marketune.adwitter.api.ApiResponse
 import com.marketune.adwitter.api.Status
 import com.marketune.adwitter.databinding.LoginFragmentBinding
+import com.marketune.adwitter.helpers.FacebookHelper
 import com.marketune.adwitter.helpers.GoogleHelper
 import com.marketune.adwitter.helpers.TwitterAuthResponse
 import com.marketune.adwitter.helpers.TwitterHelper
-import com.marketune.adwitter.models.AccessToken
-import com.marketune.adwitter.models.GoogleUser
-import com.marketune.adwitter.models.TokenManager
-import com.marketune.adwitter.models.TwitterUser
+import com.marketune.adwitter.models.*
 import com.marketune.adwitter.ui.main.MainActivity
 import com.marketune.adwitter.ui.start.register.RegisterActivity
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
+
+
 
 /**
  * @author: Abdel-Rahman El-Shikh :)
@@ -36,18 +36,21 @@ private const val TAG = "LoginActivity"
 private const val REGULAR_LOGIN_FCM_TOKEN = 0
 private const val GOOGLE_LOGIN_FCM_TOKEN = 1
 private const val TWITTER_LOGIN_FCM_TOKEN = 2
+private const val FACEBOOK_LOGIN_FCM_TOKEN = 3
 
 
 class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthResponse,
-    TwitterAuthResponse {
+    TwitterAuthResponse, FacebookHelper.FacebookResponse {
 
     private lateinit var binding: LoginFragmentBinding
     private lateinit var mViewModel: LoginViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var googleHelper: GoogleHelper
     private lateinit var twitterHelper: TwitterHelper
+    private lateinit var facebookHelper: FacebookHelper
     private lateinit var googleUser: GoogleUser
     private lateinit var twitterUser: TwitterUser
+    private lateinit var facebookUser: FacebookUser
     private lateinit var observer: Observer<ApiResponse<AccessToken>>
 
 
@@ -62,6 +65,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthR
         binding.btnLogin.setOnClickListener { login() }
         binding.googleLogin.setOnClickListener { googleHelper.performSignIn() }
         binding.twitterLogin.setOnClickListener { twitterHelper.performSignIn() }
+        binding.facebookLogin.setOnClickListener{facebookHelper.performSignIn(this)}
         tokenManager = TokenManager.getInstance(this)
 
         observer = Observer {
@@ -96,6 +100,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthR
             getString(R.string.twitterApaiKey),
             getString(R.string.twitterSecretKey)
         )
+        facebookHelper = FacebookHelper(this,"id,name,email,gender,birthday,picture.type(large),cover")
     }
 
 
@@ -103,6 +108,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthR
         super.onActivityResult(requestCode, resultCode, data)
         googleHelper.onActivityResult(requestCode, resultCode, data)
         twitterHelper.onActivityResult(requestCode, resultCode, data)
+        facebookHelper.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun goToRegisterActivity() {
@@ -138,6 +144,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthR
                     0 -> loginFromBackEnd(token)
                     1 -> getGoogleToken(token)
                     2 -> getTwitterToken(token)
+                    3 -> getFacebookToken(token)
                     else -> {
                         //Do nth for now
                     }
@@ -168,17 +175,9 @@ class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthR
         binding.tilPassword.error = null
     }
 
-    /**
-     *  handle Google SignIn success or failure.
-     */
-    override fun onGoogleAuthSignIn(user: GoogleUser) {
-        this.googleUser = user
-        getFcmToken(GOOGLE_LOGIN_FCM_TOKEN)
-    }
-
     private fun getGoogleToken(token: String) {
         binding.progressBar.visibility = View.VISIBLE
-        mViewModel.googleSocialLogin(
+        mViewModel.socialLogin(
             name = googleUser.name,
             email = googleUser.email,
             provider = getString(R.string.google),
@@ -203,7 +202,21 @@ class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthR
             followers = twitterUser.followersCount
         ).observe(this, observer)
     }
+    private fun getFacebookToken(token:String){
+        binding.progressBar.visibility = View.VISIBLE
+        mViewModel.socialLogin(
+            name = facebookUser.name,
+            email = facebookUser.email,
+            provider = getString(R.string.facebook),
+            providerId = facebookUser.facebookId,
+            fcmToken = token,
+            imageUri = facebookUser.profilePic
+        ).observe(this,observer)
+    }
 
+    /**
+     * handle social login failure
+     */
     override fun onGoogleAuthSignInFailed() {
         Toast.makeText(this, "Google sign in failed.", Toast.LENGTH_SHORT).show()
     }
@@ -212,9 +225,26 @@ class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthR
         Toast.makeText(this, "Twitter sign in failed.", Toast.LENGTH_SHORT).show()
     }
 
+    override fun onFbSignInFail() {
+        Toast.makeText(this,"Facebook Sign in failed",Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     *  handle social SignIn success.
+     */
+    override fun onGoogleAuthSignIn(user: GoogleUser) {
+        this.googleUser = user
+        getFcmToken(GOOGLE_LOGIN_FCM_TOKEN)
+    }
+
     override fun onTwitterProfileReceived(user: TwitterUser) {
         this.twitterUser = user
         getFcmToken(TWITTER_LOGIN_FCM_TOKEN)
+    }
+
+    override fun onFbProfileReceived(user: FacebookUser) {
+        this.facebookUser = user
+        getFcmToken(FACEBOOK_LOGIN_FCM_TOKEN)
     }
 
 

@@ -16,6 +16,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import com.facebook.AccessToken
+import com.facebook.login.LoginManager
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -110,8 +112,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .placeholder(getDrawable(R.drawable.ic_owner)!!)
                         .into(navHeaderBinding.imageProfile)
                 }
-                Status.ERROR -> Log.e(TAG, "getUser: ${it.apiError?.message}")
-                else -> Log.e(TAG, "getUser: ${it.apiException?.localizedMessage}")
+                Status.ERROR ->{
+                    Log.e(TAG, "getUser Error: ${it.apiError?.message}")
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                    finish()
+                }
+                else -> Log.e(TAG, "getUser Failure : ${it.apiException?.localizedMessage}")
             }
         })
     }
@@ -165,6 +171,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 TwitterCore.getInstance().sessionManager.clearActiveSession()
                 deleteTokenAndNavigate()
             }
+            isFacebookUserActive() -> {
+                Log.w("MainActivity","Signing out from Facebook")
+                LoginManager.getInstance().logOut()
+                deleteTokenAndNavigate()
+            }
             else -> deleteTokenAndNavigate()
         }
 
@@ -182,5 +193,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun isTwitterSessionActive():Boolean{
         val twitterSession = TwitterCore.getInstance().sessionManager.activeSession
         return twitterSession!=null
+    }
+    private fun isFacebookUserActive():Boolean{
+        val accessToken = AccessToken.getCurrentAccessToken()
+        return accessToken != null
     }
 }
