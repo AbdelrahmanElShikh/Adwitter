@@ -1,6 +1,7 @@
 package com.marketune.adwitter.api
 
 import com.marketune.adwitter.models.AccessToken
+import com.marketune.adwitter.models.TwitterAccount
 import com.marketune.adwitter.models.User
 import retrofit2.Call
 import retrofit2.http.Field
@@ -55,7 +56,11 @@ interface ApiService {
                     @Field("followers")followers: Int
     ):Call<AccessToken>
 
+    //get User Info
     @GET("user")
     fun getUserInfo():Call<User>
+
+    @GET("account")
+    fun getTwitterAccounts():Call<List<TwitterAccount>>
 
 }

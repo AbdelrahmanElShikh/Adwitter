@@ -47,6 +47,7 @@
 
     <!--accounts|home screen-->
     <string name="home">Home</string>
+    <string name="followers_number" formatted="true">%1$d FOLLOWERS</string>
 
     <!--monitor screen-->
     <string name="monitor">Monitor</string>

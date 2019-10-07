@@ -33,6 +33,7 @@
 
     <!--accounts|home screen-->
     <string name="home">الرئيسية</string>
+    <string name="followers_number">%1$d متابع</string>
 
 
     <!--monitor screen-->

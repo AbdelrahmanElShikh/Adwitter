@@ -1,13 +1,12 @@
 package com.marketune.adwitter.repositories
-
 import androidx.lifecycle.MutableLiveData
 import com.marketune.adwitter.api.ApiResponse
 import com.marketune.adwitter.api.RequestHandler
 import com.marketune.adwitter.api.RetrofitBuilder
 import com.marketune.adwitter.models.TokenManager
+import com.marketune.adwitter.models.TwitterAccount
 import com.marketune.adwitter.models.User
 import retrofit2.Call
-
 /**
  * Adwitter
  * @author: Abdel-Rahman El-Shikh :) on 9/23/2019
@@ -22,15 +21,26 @@ class UserRepository {
             return userRepository!!
         }
     }
-    fun getUserInfo(tokenManager: TokenManager):MutableLiveData<ApiResponse<User>>{
+
+    fun getUserInfo(tokenManager: TokenManager): MutableLiveData<ApiResponse<User>> {
         val apiService = RetrofitBuilder.createServiceWithAuth(tokenManager)
-        val requestHandler = object :RequestHandler<User>(){
+        val requestHandler = object : RequestHandler<User>() {
             override fun makeRequest(): Call<User> {
                 return apiService.getUserInfo()
             }
         }
         requestHandler.doRequest()
         return requestHandler.getApiResponse()
+    }
 
+    fun getUserTwitterAccounts(tokenManager: TokenManager): MutableLiveData<ApiResponse<List<TwitterAccount>>> {
+        val apiService = RetrofitBuilder.createServiceWithAuth(tokenManager)
+        val requestHandler = object : RequestHandler<List<TwitterAccount>>() {
+            override fun makeRequest(): Call<List<TwitterAccount>> {
+                return apiService.getTwitterAccounts()
+            }
+        }
+        requestHandler.doRequest()
+        return requestHandler.getApiResponse()
     }
 }
