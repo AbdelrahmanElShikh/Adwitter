@@ -12,7 +12,7 @@ data class TwitterAccount(
     @SerializedName("avatar") val avatar: String,
     @SerializedName("followers") val followers: Int,
     @SerializedName("profile_type") val profile_type: String,
-    @SerializedName("profile_id") val profile_id: Int,
+    @SerializedName("provider_id") val provider_id: Long,
     @SerializedName("oauth_token") val oauth_token: String,
     @SerializedName("oauth_secret") val oauth_secret: String,
     @SerializedName("status") val status: Boolean,

@@ -19,23 +19,20 @@ private const val TAG = "TwitterHelper"
 class TwitterHelper constructor(
     private var mContext: Activity,
     private var mListener: TwitterAuthResponse,
-    twitterApiKey:String,
-    twitterSecretKey:String
+    twitterApiKey: String,
+    twitterSecretKey: String
 
 ) {
-    private var mAuthClient:TwitterAuthClient
-    private val authConfig = TwitterConfig.Builder(mContext)
-        .logger(DefaultLogger(Log.DEBUG))
-        .twitterAuthConfig(TwitterAuthConfig(twitterApiKey,twitterSecretKey))
-        .debug(true)
-        .build()
+    private var mAuthClient: TwitterAuthClient
     init {
+        val authConfig = TwitterConfig.Builder(mContext)
+            .logger(DefaultLogger(Log.DEBUG))
+            .twitterAuthConfig(TwitterAuthConfig(twitterApiKey, twitterSecretKey))
+            .debug(true)
+            .build()
         Twitter.initialize(authConfig)
         mAuthClient = TwitterAuthClient()
-
     }
-
-
 
 
     fun performSignIn() {
@@ -50,8 +47,8 @@ class TwitterHelper constructor(
         })
     }
 
-    fun onActivityResult(requestCode:Int,resultCode:Int,data: Intent?){
-            mAuthClient.onActivityResult(requestCode,resultCode,data)
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        mAuthClient.onActivityResult(requestCode, resultCode, data)
 
     }
 
@@ -70,7 +67,10 @@ class TwitterHelper constructor(
                 user.useName = resultInfo.screenName
                 user.email = resultInfo.email
                 user.descripton = resultInfo.description
-                user.profileImageUrl = resultInfo.profileImageUrl.replace(mContext.getString(R.string.normal),mContext.getString(R.string.twitter_image_size))
+                user.profileImageUrl = resultInfo.profileImageUrl.replace(
+                    mContext.getString(R.string.normal),
+                    mContext.getString(R.string.twitter_image_size)
+                )
                 user.token = authToken.token
                 user.secret = authToken.secret
                 user.followersCount = resultInfo.followersCount

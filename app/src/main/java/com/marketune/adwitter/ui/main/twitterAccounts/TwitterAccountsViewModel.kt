@@ -13,13 +13,34 @@ import com.marketune.adwitter.repositories.UserRepository
  * @author: Abdel-Rahman El-Shikh :) on 10/7/2019
  */
 class TwitterAccountsViewModel : ViewModel() {
-    private lateinit var instance : UserRepository
+    private lateinit var instance: UserRepository
     private lateinit var response: MutableLiveData<ApiResponse<List<TwitterAccount>>>
-    fun init(){
+    fun init() {
         instance = UserRepository.getInstance()
     }
-    fun getUserTwitterAccounts(tokenManager: TokenManager):LiveData<ApiResponse<List<TwitterAccount>>>{
+
+    fun getUserTwitterAccounts(tokenManager: TokenManager): LiveData<ApiResponse<List<TwitterAccount>>> {
         response = instance.getUserTwitterAccounts(tokenManager)
         return response
+    }
+
+    fun addTwitterAccount(
+        tokenManager: TokenManager,
+        name: String,
+        imageUri: String,
+        followers: Int,
+        providerId: String,
+        oauthToken: String,
+        oauthSecret: String
+    ): LiveData<ApiResponse<List<TwitterAccount>>> {
+        return instance.addTwitterAccount(
+            tokenManager = tokenManager,
+            name = name,
+            imageUri = imageUri,
+            followers = followers,
+            providerId = providerId,
+            oauthToken = oauthToken,
+            oauthSecret = oauthSecret
+        )
     }
 }

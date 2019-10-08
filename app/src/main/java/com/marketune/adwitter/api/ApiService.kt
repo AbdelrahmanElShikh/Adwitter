@@ -60,7 +60,20 @@ interface ApiService {
     @GET("user")
     fun getUserInfo():Call<User>
 
+    //get user TwitterAccountList
     @GET("account")
     fun getTwitterAccounts():Call<List<TwitterAccount>>
+
+    //add twitterAccount for the user
+    @POST("account")
+    @FormUrlEncoded
+    fun addAccount(
+        @Field("name") name:String,
+        @Field("avatar") imageUri: String,
+        @Field("followers") followers: Int,
+        @Field("provider_id") providerId: String,
+        @Field("oauth_token") oauthToken:String,
+        @Field("oauth_secret") oauthSecret:String
+    ):Call<List<TwitterAccount>>
 
 }

@@ -27,7 +27,10 @@ import com.marketune.adwitter.R
 import com.marketune.adwitter.api.Status
 import com.marketune.adwitter.databinding.ActivtyMainBinding
 import com.marketune.adwitter.databinding.NavHeaderBinding
+import com.marketune.adwitter.helpers.TwitterAuthResponse
+import com.marketune.adwitter.helpers.TwitterHelper
 import com.marketune.adwitter.models.TokenManager
+import com.marketune.adwitter.models.TwitterUser
 import com.marketune.adwitter.ui.start.login.LoginActivity
 import com.squareup.picasso.Picasso
 import com.twitter.sdk.android.core.TwitterCore
@@ -38,8 +41,8 @@ import com.twitter.sdk.android.core.TwitterCore
  */
 private const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
+    TwitterAuthResponse {
     private lateinit var binding: ActivtyMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navController: NavController
@@ -47,12 +50,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var mViewModel: UserViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var toggle: ActionBarDrawerToggle
-    //google variables
     private lateinit var googleApiClient: GoogleApiClient
     private lateinit var googleSignInOptions: GoogleSignInOptions
+    private lateinit var twitterHelper: TwitterHelper
+    private lateinit var listener: OnAccountReceived
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        twitterHelper = TwitterHelper(
+            this,
+            this,
+            getString(R.string.twitterApaiKey),
+            getString(R.string.twitterSecretKey)
+        )
         binding = DataBindingUtil.setContentView(this, R.layout.activty_main)
         setSupportActionBar(binding.toolbar)
         drawerLayout = binding.drawerLayout
@@ -87,8 +98,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .build()
 
         googleApiClient = GoogleApiClient.Builder(this)
-            .addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions)
+            .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
             .build()
+
     }
 
     override fun onStart() {
@@ -101,6 +113,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         googleApiClient.disconnect()
     }
 
+    fun addAccount(listener: OnAccountReceived){
+        this.listener = listener
+        twitterHelper.performSignIn()
+
+    }
+
+
     private fun getUser() {
         mViewModel = ViewModelProviders.of(this)[UserViewModel::class.java]
         mViewModel.init()
@@ -112,7 +131,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .placeholder(getDrawable(R.drawable.ic_owner)!!)
                         .into(navHeaderBinding.imageProfile)
                 }
-                Status.ERROR ->{
+                Status.ERROR -> {
                     Log.e(TAG, "getUser Error: ${it.apiError?.message}")
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                     finish()
@@ -129,6 +148,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 R.id.main_nav_host_fragment
             ), drawerLayout
         )
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        twitterHelper.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onBackPressed() {
@@ -147,7 +170,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_edt_bank_info -> navController.navigate(R.id.editBankInfoFragment)
             R.id.nav_payment -> navController.navigate(R.id.paymentFragment)
             R.id.nav_support -> openWhatsApp(this)
-            R.id.nav_logout -> {socialLogOut()}
+            R.id.nav_logout -> {
+                socialLogOut()
+            }
             else -> Toast.makeText(this, "else", Toast.LENGTH_SHORT).show()
         }
         return true
@@ -157,22 +182,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     }
-    private fun socialLogOut(){
+    override fun onTwitterError() {
+        Toast.makeText(this, "Twitter sign in failed.", Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun onTwitterProfileReceived(user: TwitterUser) {
+        listener.onAccountReceived(user)
+    }
+
+    private fun socialLogOut() {
         when {
             isGoogleUserSignIn() -> {
-                Log.e("MainActivity","Signing out from Google")
+                Log.e("MainActivity", "Signing out from Google")
                 Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback { status ->
-                    if(status.isSuccess)
+                    if (status.isSuccess)
                         deleteTokenAndNavigate()
                 }
             }
             isTwitterSessionActive() -> {
-                Log.w("MainActivity","Signing out from Twitter")
+                Log.w("MainActivity", "Signing out from Twitter")
                 TwitterCore.getInstance().sessionManager.clearActiveSession()
                 deleteTokenAndNavigate()
             }
             isFacebookUserActive() -> {
-                Log.w("MainActivity","Signing out from Facebook")
+                Log.w("MainActivity", "Signing out from Facebook")
                 LoginManager.getInstance().logOut()
                 deleteTokenAndNavigate()
             }
@@ -187,15 +221,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivity(Intent(this@MainActivity, LoginActivity::class.java))
         finish()
     }
-    private fun isGoogleUserSignIn():Boolean{
+
+    private fun isGoogleUserSignIn(): Boolean {
         return GoogleSignIn.getLastSignedInAccount(this) != null
     }
-    private fun isTwitterSessionActive():Boolean{
+
+    private fun isTwitterSessionActive(): Boolean {
         val twitterSession = TwitterCore.getInstance().sessionManager.activeSession
-        return twitterSession!=null
+        return twitterSession != null
     }
-    private fun isFacebookUserActive():Boolean{
+
+    private fun isFacebookUserActive(): Boolean {
         val accessToken = AccessToken.getCurrentAccessToken()
         return accessToken != null
+    }
+    interface OnAccountReceived{
+        fun onAccountReceived(user:TwitterUser)
     }
 }

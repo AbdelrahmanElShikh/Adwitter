@@ -32,7 +32,7 @@ class AccountsAdapter constructor(var listener: OnAccountSelected) :
         else accountList!!.size
     }
 
-    fun setAccounts(accountList: List<TwitterAccount>) {
+    fun setAccounts(accountList: List<TwitterAccount>?) {
         this.accountList = accountList
         notifyDataSetChanged()
     }

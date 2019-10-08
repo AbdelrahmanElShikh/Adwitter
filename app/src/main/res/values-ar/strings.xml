@@ -34,7 +34,7 @@
     <!--accounts|home screen-->
     <string name="home">الرئيسية</string>
     <string name="followers_number">%1$d متابع</string>
-
+    <string name="add_account_success">تمت اضافة الحساب بنجاح</string>
 
     <!--monitor screen-->
     <string name="monitor">التفاصيل</string>

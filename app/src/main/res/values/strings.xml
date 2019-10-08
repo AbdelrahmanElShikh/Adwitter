@@ -48,6 +48,8 @@
     <!--accounts|home screen-->
     <string name="home">Home</string>
     <string name="followers_number" formatted="true">%1$d FOLLOWERS</string>
+    <string name="add_account_success">Account successfully added</string>
+
 
     <!--monitor screen-->
     <string name="monitor">Monitor</string>
