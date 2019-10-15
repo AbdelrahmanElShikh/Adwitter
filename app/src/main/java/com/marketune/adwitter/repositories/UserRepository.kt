@@ -4,10 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import com.marketune.adwitter.api.ApiResponse
 import com.marketune.adwitter.api.RequestHandler
 import com.marketune.adwitter.api.RetrofitBuilder
+import com.marketune.adwitter.models.Target
 import com.marketune.adwitter.models.TokenManager
 import com.marketune.adwitter.models.TwitterAccount
 import com.marketune.adwitter.models.User
 import retrofit2.Call
+
 
 /**
  * Adwitter
@@ -53,7 +55,8 @@ class UserRepository {
         followers: Int,
         providerId: String,
         oauthToken: String,
-        oauthSecret: String
+        oauthSecret: String,
+        targetIds:List<Int>
     ): MutableLiveData<ApiResponse<List<TwitterAccount>>> {
         val apiService = RetrofitBuilder.createServiceWithAuth(tokenManager)
         val requestHandler = object : RequestHandler<List<TwitterAccount>>() {
@@ -64,12 +67,22 @@ class UserRepository {
                     followers = followers,
                     providerId = providerId,
                     oauthToken = oauthToken,
-                    oauthSecret = oauthSecret
+                    oauthSecret = oauthSecret,
+                    targetIds = targetIds
                 )
             }
         }
         requestHandler.doRequest()
         return requestHandler.getApiResponse()
-
+    }
+    fun getTargetData(tokenManager: TokenManager):MutableLiveData<ApiResponse<Target>>{
+        val apiService = RetrofitBuilder.createServiceWithAuth(tokenManager)
+        val requestHandler = object : RequestHandler<Target>(){
+            override fun makeRequest(): Call<Target> {
+                return apiService.getTargetData()
+            }
+        }
+        requestHandler.doRequest()
+        return requestHandler.getApiResponse()
     }
 }

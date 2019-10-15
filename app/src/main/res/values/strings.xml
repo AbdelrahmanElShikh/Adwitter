@@ -15,7 +15,6 @@
     <string name="facebook" translatable="false">facebook</string>
 
 
-
     <!--Register Screen-->
     <string name="create_account">Create Account</string>
     <string name="user_name">User Name</string>
@@ -39,7 +38,6 @@
     <string name="twitter_image_size" translatable="false">400x400</string>
 
 
-
     <!--Navigation drawer-->
     <string name="name">name</string>
     <string name="active">Active</string>
@@ -49,6 +47,19 @@
     <string name="home">Home</string>
     <string name="followers_number" formatted="true">%1$d FOLLOWERS</string>
     <string name="add_account_success">Account successfully added</string>
+
+    <!--add account-->
+    <string name="targeting_setting">Targeting Settings</string>
+    <string name="location_country_city">Area (Country/City)</string>
+    <string name="interest_targeting">Interest Targeting</string>
+    <string name="age_targeting">Age</string>
+    <string name="link_twitter_account">Link Twitter Account</string>
+    <string name="choose_interest">Choose Interests</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_area">Choose Area</string>
+    <string name="choose_age">Choose Age</string>
+    <string name="target_missing">Please choose all targets.</string>
 
 
     <!--monitor screen-->
@@ -62,7 +73,6 @@
 
     <!--Call Support-->
     <string name="call_support">Call Support</string>
-
 
 
     <!-- API KEYS-->

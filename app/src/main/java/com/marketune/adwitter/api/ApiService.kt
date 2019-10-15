@@ -1,6 +1,7 @@
 package com.marketune.adwitter.api
 
 import com.marketune.adwitter.models.AccessToken
+import com.marketune.adwitter.models.Target
 import com.marketune.adwitter.models.TwitterAccount
 import com.marketune.adwitter.models.User
 import retrofit2.Call
@@ -73,7 +74,12 @@ interface ApiService {
         @Field("followers") followers: Int,
         @Field("provider_id") providerId: String,
         @Field("oauth_token") oauthToken:String,
-        @Field("oauth_secret") oauthSecret:String
+        @Field("oauth_secret") oauthSecret:String,
+        @Field("target_ids") targetIds:List<Int>
     ):Call<List<TwitterAccount>>
+
+    //Get target data
+    @GET("target")
+    fun getTargetData():Call<Target>
 
 }

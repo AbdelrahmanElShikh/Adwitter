@@ -25,4 +25,9 @@
         android:name="com.marketune.adwitter.ui.main.payment.PaymentFragment"
         android:label="PaymentFragment"
         tools:layout="@layout/payment_tabs_fragment"/>
+    <fragment
+        android:id="@+id/addAccountFragment"
+        android:name="com.marketune.adwitter.ui.main.addAccount.AddAccountFragment"
+        android:label="@string/targeting_setting"
+        tools:layout="@layout/add_account_fragment"/>
 </navigation>

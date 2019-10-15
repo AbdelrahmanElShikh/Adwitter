@@ -1,29 +1,25 @@
-package com.marketune.adwitter.ui.main.twitterAccounts
+package com.marketune.adwitter.ui.main.addAccount
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.marketune.adwitter.api.ApiResponse
+import com.marketune.adwitter.models.Target
 import com.marketune.adwitter.models.TokenManager
 import com.marketune.adwitter.models.TwitterAccount
 import com.marketune.adwitter.repositories.UserRepository
 
 /**
  * Adwitter
- * @author: Abdel-Rahman El-Shikh :) on 10/7/2019
+ * @author: Abdel-Rahman El-Shikh :) on 10/14/2019
  */
-class TwitterAccountsViewModel : ViewModel() {
+class AddAccountViewModel : ViewModel(){
     private lateinit var instance: UserRepository
-    private lateinit var response: MutableLiveData<ApiResponse<List<TwitterAccount>>>
     fun init() {
         instance = UserRepository.getInstance()
     }
-
-    fun getUserTwitterAccounts(tokenManager: TokenManager): LiveData<ApiResponse<List<TwitterAccount>>> {
-        response = instance.getUserTwitterAccounts(tokenManager)
-        return response
+    fun getTargetData(tokenManager: TokenManager):LiveData<ApiResponse<Target>>{
+        return instance.getTargetData(tokenManager)
     }
-
     fun addTwitterAccount(
         tokenManager: TokenManager,
         name: String,
@@ -32,7 +28,7 @@ class TwitterAccountsViewModel : ViewModel() {
         providerId: String,
         oauthToken: String,
         oauthSecret: String,
-        targetIds: List<Int>
+        targetIds : List<Int>
     ): LiveData<ApiResponse<List<TwitterAccount>>> {
         return instance.addTwitterAccount(
             tokenManager = tokenManager,

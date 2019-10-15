@@ -15,7 +15,7 @@ import java.io.IOException
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class RetrofitBuilder {
     companion object {
-        private const val BASE_URL = "http://192.168.1.10/adw/public/api/"
+        private const val BASE_URL = "http://192.168.1.22/adw/public/api/"
         private val client = buildClient()
         private var retrofit: Retrofit? = getClient()
         private val TAG = "RetrofitBuilder"

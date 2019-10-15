@@ -13,6 +13,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.marketune.adwitter.R
 import com.marketune.adwitter.adapters.AccountsAdapter
@@ -20,8 +22,6 @@ import com.marketune.adwitter.api.Status
 import com.marketune.adwitter.databinding.AccountsFragmentBinding
 import com.marketune.adwitter.models.TokenManager
 import com.marketune.adwitter.models.TwitterAccount
-import com.marketune.adwitter.models.TwitterUser
-import com.marketune.adwitter.ui.main.MainActivity
 
 
 /**
@@ -29,13 +29,11 @@ import com.marketune.adwitter.ui.main.MainActivity
  */
 private const val TAG = "AccountsFragment"
 
-class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
-    MainActivity.OnAccountReceived {
+class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected {
     private lateinit var binding: AccountsFragmentBinding
     private lateinit var mViewModel: TwitterAccountsViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var mAdapter: AccountsAdapter
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +49,8 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
         }
         mViewModel = ViewModelProviders.of(this)[TwitterAccountsViewModel::class.java]
         tokenManager = TokenManager.getInstance(activity)
-        binding.fab.setOnClickListener { (activity as MainActivity).addAccount(this) }
-
+        //binding.fab.setOnClickListener { (activity as MainActivity).addAccount(this) }
+        binding.fab.setOnClickListener { controller().navigate(R.id.addAccountFragment) }
         mViewModel.init()
         return binding.root
     }
@@ -73,7 +71,7 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
                     Log.e(TAG, "onActivityCreated -> Error  ${it.apiError?.message}")
                 }
                 Status.FAILURE -> {
-                    Toast.makeText(activity, "Failed To Connect", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Failed To Connect 404", Toast.LENGTH_SHORT).show()
                     Log.e(TAG, "onActivityCreated -> Failure  ${it.apiException?.localizedMessage}")
                 }
             }
@@ -84,48 +82,25 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
     override fun onAccountSelected(account: TwitterAccount) {
         try {
             val twitterUserId = (account.provider_id)
-            Log.e(TAG,"$twitterUserId")
-            startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("twitter://user?user_id=${twitterUserId}" )))
-        }catch (e:Exception){
+            Log.e(TAG, "$twitterUserId")
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("twitter://user?user_id=${twitterUserId}")
+                )
+            )
+        } catch (e: Exception) {
             val twitterUserName = account.name
-            startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("https://twitter.com/#!/${twitterUserName}" )))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://twitter.com/#!/${twitterUserName}")
+                )
+            )
         }
     }
 
-    override fun onAccountReceived(user: TwitterUser) {
-        binding.progressBar.visibility = View.VISIBLE
-        mViewModel.addTwitterAccount(
-            tokenManager = tokenManager,
-            name = user.name,
-            imageUri = user.profileImageUrl,
-            followers = user.followersCount,
-            providerId = user.id,
-            oauthToken = user.token,
-            oauthSecret = user.secret
-        ).observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    mAdapter.setAccounts(null)
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.add_account_success),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    mAdapter.setAccounts(it.data!!)
-                }
-                Status.ERROR -> {
-                    if (it.apiError!!.code == 402) {
-                        Toast.makeText(activity, it!!.apiError!!.message, Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(activity, it!!.apiError!!.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-                Status.FAILURE -> {
-                    Log.e(TAG, "onAccountReceived - > Failure ${it.apiException?.localizedMessage}")
-                }
-            }
-            binding.progressBar.visibility = View.GONE
-
-        })
+    private fun controller(): NavController {
+        return NavHostFragment.findNavController(this)
     }
 }

@@ -36,6 +36,20 @@
     <string name="followers_number">%1$d متابع</string>
     <string name="add_account_success">تمت اضافة الحساب بنجاح</string>
 
+    <!--add account-->
+    <string name="targeting_setting">الإعدادات المستهدفة</string>
+    <string name="location_country_city">المكان (دولة/مدينة)</string>
+    <string name="interest_targeting">الإهتمامات المستهدفة</string>
+    <string name="age_targeting">العمر</string>
+    <string name="link_twitter_account">ربط بحساب تويتر</string>
+    <string name="choose_interest">اختار الاهتمامات</string>
+    <string name="ok">تاكيد</string>
+    <string name="cancel">الغاء</string>
+    <string name="choose_area">اختار الاماكن</string>
+    <string name="choose_age">اختار الاعمار</string>
+    <string name="target_missing">من فضلك اختار جميع الاهداف</string>
+
+
     <!--monitor screen-->
     <string name="monitor">التفاصيل</string>
 
