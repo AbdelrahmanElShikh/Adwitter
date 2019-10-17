@@ -35,6 +35,11 @@
     <string name="home">الرئيسية</string>
     <string name="followers_number">%1$d متابع</string>
     <string name="add_account_success">تمت اضافة الحساب بنجاح</string>
+    <string name="no_account">لا توجد حسابات</string>
+    <string name="pending">قيد الانتظار</string>
+    <string name="reconnect">اعادة الاتصال</string>
+
+
 
     <!--add account-->
     <string name="targeting_setting">الإعدادات المستهدفة</string>

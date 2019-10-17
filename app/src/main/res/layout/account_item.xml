@@ -5,7 +5,7 @@
     xmlns:card_view="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="account"
             type="com.marketune.adwitter.models.TwitterAccount" />
@@ -40,17 +40,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:textStyle="bold"
+                android:text="@{account.name}"
                 android:textColor="@color/transaction_color"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/text_num_followers"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/account_image"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:text="name"
-                android:text="@{account.name}"/>
+                tools:text="name" />
 
             <TextView
                 android:id="@+id/text_num_followers"
@@ -58,17 +57,73 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:textStyle="bold"
+                android:text="@{String.format(@string/followers_number,account.followers)}"
                 android:textColor="#f00"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/account_image"
                 app:layout_constraintTop_toBottomOf="@+id/account_name"
-                tools:text="14k"
-                android:text="@{String.format(@string/followers_number,account.followers)}"
-                />
+                tools:text="14k" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{account.connected? View.VISIBLE:View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_user_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:visibility="visible"
+                    android:textStyle="bold"
+                    android:text="@{account.status? @string/active: @string/pending}"
+                    android:textColor="@color/statusColor"
+                    android:textSize="15sp"
+                    tools:text="Status"/>
+
+                <ImageView
+                    android:id="@+id/status_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:tint="@{account.status? @color/green : @color/red }"
+                    android:src="@drawable/circle_status" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{account.connected? View.GONE:View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:visibility="visible"
+                    android:textStyle="bold"
+                    android:text="@string/reconnect"
+                    android:textColor="@color/statusColor"
+                    android:textSize="15sp"
+                    tools:text="Status"/>
+            <ImageButton
+                android:id="@+id/btn_reconnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"                android:padding="8dp"
+                android:src="@drawable/ic_reconnect" />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

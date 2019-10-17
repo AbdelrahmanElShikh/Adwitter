@@ -64,7 +64,14 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected {
         mViewModel.getUserTwitterAccounts(tokenManager).observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Status.SUCCESS -> {
-                    mAdapter.setAccounts(it.data!!)
+                    if(it.data!!.isNotEmpty()){
+                        binding.txtNoAccounts.visibility = View.GONE
+                        mAdapter.setAccounts(it.data!!)
+                    }else{
+                        mAdapter.setAccounts(null)
+                        binding.txtNoAccounts.visibility = View.VISIBLE
+                    }
+
                 }
                 Status.ERROR -> {
                     Toast.makeText(activity, it.apiError?.message, Toast.LENGTH_SHORT).show()

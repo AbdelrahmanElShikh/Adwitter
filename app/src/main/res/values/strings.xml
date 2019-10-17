@@ -47,6 +47,9 @@
     <string name="home">Home</string>
     <string name="followers_number" formatted="true">%1$d FOLLOWERS</string>
     <string name="add_account_success">Account successfully added</string>
+    <string name="no_account">No Accounts</string>
+    <string name="pending">Pending</string>
+    <string name="reconnect">Re-Connect</string>
 
     <!--add account-->
     <string name="targeting_setting">Targeting Settings</string>
@@ -80,6 +83,7 @@
     <string name="twitterApaiKey" translatable="false">urPgsHNnrz7QTl0XqOUhI56cq</string>
     <string name="twitterSecretKey" translatable="false">YQR3wftU1hSPh6qiwOa9Zl1E49JRjAmrTxcfYhkGTuvEhVSTAP</string>
     <string name="facebook_app_id" translatable="false">2265779510318787</string>
+
 
 
 </resources>
