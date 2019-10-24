@@ -99,8 +99,8 @@ class UserRepository {
             }
 
         }
-        requestHandler.doRequest();
-        return requestHandler.getApiResponse();
+        requestHandler.doRequest()
+        return requestHandler.getApiResponse()
     }
 
     fun getTargetData(tokenManager: TokenManager): MutableLiveData<ApiResponse<Target>> {
