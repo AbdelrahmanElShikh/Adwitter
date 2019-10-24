@@ -24,25 +24,23 @@ class TwitterAccountsViewModel : ViewModel() {
         return response
     }
 
-    fun addTwitterAccount(
+    fun reconnectAccount(
         tokenManager: TokenManager,
+        accountId: Int,
         name: String,
         imageUri: String,
         followers: Int,
-        providerId: String,
         oauthToken: String,
-        oauthSecret: String,
-        targetIds: List<Int>
+        oauthSecret: String
     ): LiveData<ApiResponse<List<TwitterAccount>>> {
-        return instance.addTwitterAccount(
+        return instance.reconnectAccount(
             tokenManager = tokenManager,
+            accountId = accountId,
             name = name,
             imageUri = imageUri,
             followers = followers,
-            providerId = providerId,
             oauthToken = oauthToken,
-            oauthSecret = oauthSecret,
-            targetIds = targetIds
+            oauthSecret = oauthSecret
         )
     }
 }

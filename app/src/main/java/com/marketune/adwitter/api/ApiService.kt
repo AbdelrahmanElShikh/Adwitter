@@ -5,10 +5,7 @@ import com.marketune.adwitter.models.Target
 import com.marketune.adwitter.models.TwitterAccount
 import com.marketune.adwitter.models.User
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * @author: Abdel-Rahman El-Shikh :) 17/9/2019
@@ -78,6 +75,16 @@ interface ApiService {
         @Field("target_ids") targetIds:List<Int>
     ):Call<List<TwitterAccount>>
 
+    //Account Re-Connection
+    @PUT("account/{accountId}")
+    @FormUrlEncoded
+    fun reconnectAccount(@Path("accountId") accountId:Int,
+                         @Field("name") name: String,
+                         @Field("avatar") imageUri: String,
+                         @Field("followers") followers: Int,
+                         @Field("oauth_token") oauthToken:String,
+                         @Field("oauth_secret") oauthSecret:String
+                         ):Call<List<TwitterAccount>>
     //Get target data
     @GET("target")
     fun getTargetData():Call<Target>

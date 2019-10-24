@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity(), TextWatcher, GoogleHelper.GoogleAuthR
         binding.goToRegister.setOnClickListener { goToRegisterActivity() }
         binding.btnLogin.setOnClickListener { login() }
         binding.googleLogin.setOnClickListener { googleHelper.performSignIn() }
-        binding.twitterLogin.setOnClickListener { twitterHelper.performSignIn() }
+        binding.twitterLogin.setOnClickListener { twitterHelper.authorize() }
         binding.facebookLogin.setOnClickListener{facebookHelper.performSignIn(this)}
         tokenManager = TokenManager.getInstance(this)
 

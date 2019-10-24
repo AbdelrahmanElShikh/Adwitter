@@ -146,7 +146,7 @@ class AddAccountFragment : Fragment() ,MainActivity.OnAccountReceived{
 
         if(interestCheckedItems.contains(true) && areaCheckedItems.contains(true) && ageCheckedItems.contains(true))
         {
-            (activity as MainActivity).addAccount(this)
+            (activity as MainActivity).authorize(this)
         }else
             Toast.makeText(activity,getString(R.string.target_missing),Toast.LENGTH_SHORT).show()
     }

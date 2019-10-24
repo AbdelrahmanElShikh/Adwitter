@@ -16,12 +16,15 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.marketune.adwitter.R
 import com.marketune.adwitter.adapters.AccountsAdapter
 import com.marketune.adwitter.api.Status
 import com.marketune.adwitter.databinding.AccountsFragmentBinding
 import com.marketune.adwitter.models.TokenManager
 import com.marketune.adwitter.models.TwitterAccount
+import com.marketune.adwitter.models.TwitterUser
+import com.marketune.adwitter.ui.main.MainActivity
 
 
 /**
@@ -29,11 +32,13 @@ import com.marketune.adwitter.models.TwitterAccount
  */
 private const val TAG = "AccountsFragment"
 
-class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected {
+class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
+    MainActivity.OnAccountReceived {
     private lateinit var binding: AccountsFragmentBinding
     private lateinit var mViewModel: TwitterAccountsViewModel
     private lateinit var tokenManager: TokenManager
     private lateinit var mAdapter: AccountsAdapter
+    private var accountId = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +54,7 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected {
         }
         mViewModel = ViewModelProviders.of(this)[TwitterAccountsViewModel::class.java]
         tokenManager = TokenManager.getInstance(activity)
-        //binding.fab.setOnClickListener { (activity as MainActivity).addAccount(this) }
+        //binding.fab.setOnClickListener { (activity as MainActivity).authorize(this) }
         binding.fab.setOnClickListener { controller().navigate(R.id.addAccountFragment) }
         mViewModel.init()
         return binding.root
@@ -64,10 +69,10 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected {
         mViewModel.getUserTwitterAccounts(tokenManager).observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Status.SUCCESS -> {
-                    if(it.data!!.isNotEmpty()){
+                    if (it.data!!.isNotEmpty()) {
                         binding.txtNoAccounts.visibility = View.GONE
                         mAdapter.setAccounts(it.data!!)
-                    }else{
+                    } else {
                         mAdapter.setAccounts(null)
                         binding.txtNoAccounts.visibility = View.VISIBLE
                     }
@@ -78,7 +83,7 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected {
                     Log.e(TAG, "onActivityCreated -> Error  ${it.apiError?.message}")
                 }
                 Status.FAILURE -> {
-                    Toast.makeText(activity, "Failed To Connect 404", Toast.LENGTH_SHORT).show()
+                    showFailureSnackbar()
                     Log.e(TAG, "onActivityCreated -> Failure  ${it.apiException?.localizedMessage}")
                 }
             }
@@ -107,6 +112,53 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected {
         }
     }
 
+    override fun onAccountReconnectClicked(accountId: Int) {
+        this.accountId = accountId
+        (activity as MainActivity).authorize(this)
+    }
+
+    override fun onAccountReceived(user: TwitterUser) {
+        binding.progressBar.visibility = View.VISIBLE
+        mViewModel.reconnectAccount(
+            tokenManager = tokenManager,
+            accountId = accountId,
+            name = user.name,
+            imageUri = user.profileImageUrl,
+            followers = user.followersCount,
+            oauthToken = user.token,
+            oauthSecret = user.secret
+        ).observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    if (it.data!!.isNotEmpty()) {
+                        binding.txtNoAccounts.visibility = View.GONE
+                        mAdapter.setAccounts(it.data!!)
+                    } else {
+                        mAdapter.setAccounts(null)
+                        binding.txtNoAccounts.visibility = View.VISIBLE
+                    }
+                }
+                Status.ERROR -> {
+                    Toast.makeText(activity, it.apiError?.message, Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "onActivityCreated -> Error  ${it.apiError?.message}")
+                }
+                Status.FAILURE -> {
+                    showFailureSnackbar()
+                    Log.e(TAG, "onActivityCreated -> Failure  ${it.apiException?.localizedMessage}")
+                }
+            }
+            binding.progressBar.visibility = View.GONE
+
+        })
+    }
+
+    private fun showFailureSnackbar(){
+        Snackbar.make(
+            binding.rootLayout,
+            "please make sure you have stable internet connection",
+            Snackbar.LENGTH_SHORT
+        ).show()
+    }
     private fun controller(): NavController {
         return NavHostFragment.findNavController(this)
     }

@@ -35,7 +35,7 @@ class TwitterHelper constructor(
     }
 
 
-    fun performSignIn() {
+    fun authorize() {
         mAuthClient.authorize(mContext, object : Callback<TwitterSession>() {
             override fun success(result: Result<TwitterSession>?) {
                 getUserData()

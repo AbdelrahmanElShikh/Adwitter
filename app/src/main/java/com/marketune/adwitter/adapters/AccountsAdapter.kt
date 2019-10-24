@@ -39,12 +39,20 @@ class AccountsAdapter constructor(var listener: OnAccountSelected) :
 
     interface OnAccountSelected {
         fun onAccountSelected(account: TwitterAccount)
+        fun onAccountReconnectClicked(accountId : Int)
     }
 
     inner class ViewHolder(var binding: AccountItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener { onClick() }
+            binding.btnReconnect.setOnClickListener { reconnectAccount() }
+
+        }
+
+        private fun reconnectAccount() {
+            val accountId = accountList!![adapterPosition].id
+            listener.onAccountReconnectClicked(accountId)
         }
 
         private fun onClick() {

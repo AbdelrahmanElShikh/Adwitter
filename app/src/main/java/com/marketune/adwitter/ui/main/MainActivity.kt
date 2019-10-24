@@ -113,10 +113,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         googleApiClient.disconnect()
     }
 
-    fun addAccount(listener: OnAccountReceived){
+    fun authorize(listener: OnAccountReceived){
         this.listener = listener
-        twitterHelper.performSignIn()
-
+        twitterHelper.authorize()
     }
 
 

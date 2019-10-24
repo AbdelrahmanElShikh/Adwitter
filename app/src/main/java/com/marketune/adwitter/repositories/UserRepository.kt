@@ -56,7 +56,7 @@ class UserRepository {
         providerId: String,
         oauthToken: String,
         oauthSecret: String,
-        targetIds:List<Int>
+        targetIds: List<Int>
     ): MutableLiveData<ApiResponse<List<TwitterAccount>>> {
         val apiService = RetrofitBuilder.createServiceWithAuth(tokenManager)
         val requestHandler = object : RequestHandler<List<TwitterAccount>>() {
@@ -75,9 +75,37 @@ class UserRepository {
         requestHandler.doRequest()
         return requestHandler.getApiResponse()
     }
-    fun getTargetData(tokenManager: TokenManager):MutableLiveData<ApiResponse<Target>>{
+
+    fun reconnectAccount(
+        tokenManager: TokenManager,
+        accountId: Int,
+        name: String,
+        imageUri: String,
+        followers: Int,
+        oauthToken: String,
+        oauthSecret: String
+    ): MutableLiveData<ApiResponse<List<TwitterAccount>>> {
         val apiService = RetrofitBuilder.createServiceWithAuth(tokenManager)
-        val requestHandler = object : RequestHandler<Target>(){
+        val requestHandler = object : RequestHandler<List<TwitterAccount>>() {
+            override fun makeRequest(): Call<List<TwitterAccount>> {
+                return apiService.reconnectAccount(
+                    accountId = accountId,
+                    name = name,
+                    imageUri = imageUri,
+                    followers = followers,
+                    oauthToken = oauthToken,
+                    oauthSecret = oauthSecret
+                )
+            }
+
+        }
+        requestHandler.doRequest();
+        return requestHandler.getApiResponse();
+    }
+
+    fun getTargetData(tokenManager: TokenManager): MutableLiveData<ApiResponse<Target>> {
+        val apiService = RetrofitBuilder.createServiceWithAuth(tokenManager)
+        val requestHandler = object : RequestHandler<Target>() {
             override fun makeRequest(): Call<Target> {
                 return apiService.getTargetData()
             }
