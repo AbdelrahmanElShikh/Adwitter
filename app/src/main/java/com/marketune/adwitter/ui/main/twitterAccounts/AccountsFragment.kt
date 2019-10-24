@@ -54,7 +54,6 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
         }
         mViewModel = ViewModelProviders.of(this)[TwitterAccountsViewModel::class.java]
         tokenManager = TokenManager.getInstance(activity)
-        //binding.fab.setOnClickListener { (activity as MainActivity).authorize(this) }
         binding.fab.setOnClickListener { controller().navigate(R.id.addAccountFragment) }
         mViewModel.init()
         return binding.root
@@ -62,11 +61,14 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        getAccounts()
+        mViewModel.initUserTwitterAccounts(tokenManager)
+        setUpAccountsObservable()
     }
 
-    private fun getAccounts() {
-        mViewModel.getUserTwitterAccounts(tokenManager).observe(viewLifecycleOwner, Observer {
+    private fun setUpAccountsObservable() {
+        binding.progressBar.visibility = View.VISIBLE
+        mViewModel.getUserTwitterAccounts().observe(viewLifecycleOwner, Observer {
+            Log.e(TAG, "accountObserve")
             when (it.status) {
                 Status.SUCCESS -> {
                     if (it.data!!.isNotEmpty()) {
@@ -118,8 +120,7 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
     }
 
     override fun onAccountReceived(user: TwitterUser) {
-        binding.progressBar.visibility = View.VISIBLE
-        mViewModel.reconnectAccount(
+        mViewModel.initGetReconnectionResponse(
             tokenManager = tokenManager,
             accountId = accountId,
             name = user.name,
@@ -127,7 +128,13 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
             followers = user.followersCount,
             oauthToken = user.token,
             oauthSecret = user.secret
-        ).observe(viewLifecycleOwner, Observer {
+        )
+        setReconnectAccountObservable()
+    }
+
+    private fun setReconnectAccountObservable() {
+        binding.progressBar.visibility = View.VISIBLE
+        mViewModel.getReconnectAccountResponse().observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Status.SUCCESS -> {
                     if (it.data!!.isNotEmpty()) {
@@ -152,13 +159,20 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
         })
     }
 
-    private fun showFailureSnackbar(){
+    private fun showFailureSnackbar() {
         Snackbar.make(
             binding.rootLayout,
-            "please make sure you have stable internet connection",
-            Snackbar.LENGTH_SHORT
-        ).show()
+            getString(R.string.internet_issue),
+            Snackbar.LENGTH_INDEFINITE
+        ).setAction(
+            getString(R.string.retry)
+        ) {
+            binding.progressBar.visibility = View.VISIBLE
+            mViewModel.initUserTwitterAccounts(tokenManager)
+        }
+            .show()
     }
+
     private fun controller(): NavController {
         return NavHostFragment.findNavController(this)
     }

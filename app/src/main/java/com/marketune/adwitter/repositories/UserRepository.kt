@@ -4,11 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import com.marketune.adwitter.api.ApiResponse
 import com.marketune.adwitter.api.RequestHandler
 import com.marketune.adwitter.api.RetrofitBuilder
+import com.marketune.adwitter.api.Status
 import com.marketune.adwitter.models.Target
 import com.marketune.adwitter.models.TokenManager
 import com.marketune.adwitter.models.TwitterAccount
 import com.marketune.adwitter.models.User
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 /**
@@ -16,6 +19,9 @@ import retrofit2.Call
  * @author: Abdel-Rahman El-Shikh :) on 9/23/2019
  */
 class UserRepository {
+    private var twitterAccountsMutableLiveData =
+        MutableLiveData<ApiResponse<List<TwitterAccount>>>()
+
     companion object {
         private var userRepository: UserRepository? = null
 
@@ -39,13 +45,35 @@ class UserRepository {
 
     fun getUserTwitterAccounts(tokenManager: TokenManager): MutableLiveData<ApiResponse<List<TwitterAccount>>> {
         val apiService = RetrofitBuilder.createServiceWithAuth(tokenManager)
-        val requestHandler = object : RequestHandler<List<TwitterAccount>>() {
-            override fun makeRequest(): Call<List<TwitterAccount>> {
-                return apiService.getTwitterAccounts()
+        val apiResponse: ApiResponse<List<TwitterAccount>> = ApiResponse()
+        apiService.getTwitterAccounts().enqueue(object : Callback<List<TwitterAccount>> {
+            override fun onResponse(
+                call: Call<List<TwitterAccount>>,
+                response: Response<List<TwitterAccount>>
+            ) {
+                if (response.isSuccessful) {
+                    apiResponse.data = response.body()
+                    apiResponse.status = Status.SUCCESS
+                    twitterAccountsMutableLiveData.value = apiResponse
+                } else {
+                    apiResponse.apiError =
+                        RetrofitBuilder.convertErrors(response = response.errorBody())
+                    apiResponse.status = Status.ERROR
+                    twitterAccountsMutableLiveData.value = apiResponse
+                }
             }
-        }
-        requestHandler.doRequest()
-        return requestHandler.getApiResponse()
+
+
+            override fun onFailure(call: Call<List<TwitterAccount>>, t: Throwable) {
+                apiResponse.apiException = t as Exception
+                apiResponse.status = Status.FAILURE
+                twitterAccountsMutableLiveData.value = apiResponse
+            }
+
+
+        })
+        return twitterAccountsMutableLiveData
+
     }
 
     fun addTwitterAccount(

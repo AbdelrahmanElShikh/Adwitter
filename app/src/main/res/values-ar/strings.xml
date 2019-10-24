@@ -38,7 +38,8 @@
     <string name="no_account">لا توجد حسابات</string>
     <string name="pending">قيد الانتظار</string>
     <string name="reconnect">اعادة الاتصال</string>
-
+    <string name="retry">اعادة التحميل</string>
+    <string name="internet_issue">هناك مشكلة في الانترنت</string>
 
 
     <!--add account-->
@@ -69,6 +70,7 @@
     <!--Call Support-->
     <string name="call_support">إتصل بالدعم</string>
     <string name="normal">طبيعي</string>
+
 
 
 </resources>

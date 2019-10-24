@@ -14,17 +14,20 @@ import com.marketune.adwitter.repositories.UserRepository
  */
 class TwitterAccountsViewModel : ViewModel() {
     private lateinit var instance: UserRepository
-    private lateinit var response: MutableLiveData<ApiResponse<List<TwitterAccount>>>
+    private lateinit var userAccountObservable: MutableLiveData<ApiResponse<List<TwitterAccount>>>
+    private lateinit var reconnectAccountObservable: MutableLiveData<ApiResponse<List<TwitterAccount>>>
     fun init() {
         instance = UserRepository.getInstance()
     }
 
-    fun getUserTwitterAccounts(tokenManager: TokenManager): LiveData<ApiResponse<List<TwitterAccount>>> {
-        response = instance.getUserTwitterAccounts(tokenManager)
-        return response
+    fun initUserTwitterAccounts(tokenManager: TokenManager) {
+        userAccountObservable = instance.getUserTwitterAccounts(tokenManager)
+    }
+    fun getUserTwitterAccounts():LiveData<ApiResponse<List<TwitterAccount>>>{
+        return userAccountObservable
     }
 
-    fun reconnectAccount(
+    fun initGetReconnectionResponse(
         tokenManager: TokenManager,
         accountId: Int,
         name: String,
@@ -32,8 +35,8 @@ class TwitterAccountsViewModel : ViewModel() {
         followers: Int,
         oauthToken: String,
         oauthSecret: String
-    ): LiveData<ApiResponse<List<TwitterAccount>>> {
-        return instance.reconnectAccount(
+    ){
+        reconnectAccountObservable = instance.reconnectAccount(
             tokenManager = tokenManager,
             accountId = accountId,
             name = name,
@@ -42,5 +45,9 @@ class TwitterAccountsViewModel : ViewModel() {
             oauthToken = oauthToken,
             oauthSecret = oauthSecret
         )
+    }
+
+    fun getReconnectAccountResponse(): LiveData<ApiResponse<List<TwitterAccount>>> {
+        return reconnectAccountObservable
     }
 }
