@@ -200,12 +200,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
             isTwitterSessionActive() -> {
-                Log.w("MainActivity", "Signing out from Twitter")
+                Log.w(TAG, "Signing out from Twitter")
                 TwitterCore.getInstance().sessionManager.clearActiveSession()
                 deleteTokenAndNavigate()
             }
             isFacebookUserActive() -> {
-                Log.w("MainActivity", "Signing out from Facebook")
+                Log.w(TAG, "Signing out from Facebook")
                 LoginManager.getInstance().logOut()
                 deleteTokenAndNavigate()
             }
