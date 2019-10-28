@@ -64,6 +64,22 @@
     <string name="bank_information">المعلومات البنكية</string>
 
 
+    <!--bank account fragment-->
+    <string name="bank_account">الحساب البنكي</string>
+    <string name="bank_country">مدينة البنك</string>
+    <string name="bank_name">اسم البنك</string>
+    <string name="beneficiaryName">اسم المستفيد</string>
+    <string name="account_number">رقم الحساب</string>
+    <string name="balance_hint">الرصيد</string>
+    <string name="iban">رقم الحساب البنكي الدولي</string>
+    <string name="edit_information">تعديل</string>
+    <string name="enter_amount">أدخل المبلغ</string>
+    <string name="proceed">سحب</string>
+
+
+    <!--Paypal Fragment-->
+    <string name="paypal">Paypal</string>
+
     <!--Payment and Financial-->
     <string name="payment_and_financial">الدفع والحسابات</string>
 

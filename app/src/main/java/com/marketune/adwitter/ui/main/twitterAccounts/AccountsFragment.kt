@@ -68,7 +68,6 @@ class AccountsFragment : Fragment(), AccountsAdapter.OnAccountSelected,
     private fun setUpAccountsObservable() {
         binding.progressBar.visibility = View.VISIBLE
         mViewModel.getUserTwitterAccounts().observe(viewLifecycleOwner, Observer {
-            Log.e(TAG, "accountObserve")
             when (it.status) {
                 Status.SUCCESS -> {
                     if (it.data!!.isNotEmpty()) {

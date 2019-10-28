@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.marketune.adwitter.R
+import com.marketune.adwitter.adapters.PaymentPagerAdapter
 import com.marketune.adwitter.databinding.PaymentTabsFragmentBinding
 
 /**
@@ -23,7 +24,8 @@ class PaymentFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.payment_tabs_fragment,container,false)
         (activity as AppCompatActivity).supportActionBar!!.title = getString(R.string.payment_and_financial)
-
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
+        binding.viewPager.adapter = PaymentPagerAdapter(context,childFragmentManager)
         return binding.root
     }
 }

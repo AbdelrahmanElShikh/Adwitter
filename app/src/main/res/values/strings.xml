@@ -73,8 +73,27 @@
     <!--bank information-->
     <string name="bank_information">Bank Information</string>
 
+
     <!--Payment and Financial-->
     <string name="payment_and_financial">Payment and Financial</string>
+
+
+    <!--bank account fragment-->
+    <string name="bank_account">BANK ACCOUNT</string>
+    <string name="bank_country">Bank Country</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="beneficiaryName">Beneficiary Name</string>
+    <string name="account_number">Account Number</string>
+    <string name="balance_hint">Balance</string>
+    <string name="iban">Iban</string>
+    <string name="edit_information">Edit</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="proceed">Proceed</string>
+
+
+    <!--Paypal Fragment-->
+    <string name="paypal">Paypal</string>
+
 
     <!--Call Support-->
     <string name="call_support">Call Support</string>
@@ -85,6 +104,7 @@
     <string name="twitterApaiKey" translatable="false">urPgsHNnrz7QTl0XqOUhI56cq</string>
     <string name="twitterSecretKey" translatable="false">YQR3wftU1hSPh6qiwOa9Zl1E49JRjAmrTxcfYhkGTuvEhVSTAP</string>
     <string name="facebook_app_id" translatable="false">2265779510318787</string>
+
 
 
 </resources>
