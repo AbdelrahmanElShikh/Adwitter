@@ -106,7 +106,7 @@
     <string name="twitterApaiKey" translatable="false">urPgsHNnrz7QTl0XqOUhI56cq</string>
     <string name="twitterSecretKey" translatable="false">YQR3wftU1hSPh6qiwOa9Zl1E49JRjAmrTxcfYhkGTuvEhVSTAP</string>
     <string name="facebook_app_id" translatable="false">2265779510318787</string>
-
+    <string name="error_bank_details">Error geting bank infromation</string>
 
 
 </resources>

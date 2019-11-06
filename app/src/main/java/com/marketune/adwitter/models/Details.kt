@@ -1,14 +1,14 @@
 package com.marketune.adwitter.models
 
+import com.google.gson.annotations.SerializedName
+
 data class Details(
-    val account_number: String,
-    val bank_country: String,
-    val bank_name: String,
-    val beneficiary_name: String,
-    val created_at: String,
-    val iban: String,
-    val id: Int,
-    val phone: String,
-    val updated_at: String,
-    val user_id: Int
+    @SerializedName("account_number") val account_number: String,
+    @SerializedName("bank_country") val bank_country: String,
+    @SerializedName("bank_name") val bank_name: String,
+    @SerializedName("beneficiary_name") val beneficiary_name: String,
+    @SerializedName("iban") val iban: String,
+    @SerializedName("id") val id: Int,
+    @SerializedName("phone") val phone: String,
+    @SerializedName("user_id") val user_id: Int
 )

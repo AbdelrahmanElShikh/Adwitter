@@ -88,7 +88,7 @@
     <!--Call Support-->
     <string name="call_support">إتصل بالدعم</string>
     <string name="normal">طبيعي</string>
-
+    <string name="error_bank_details">Error geting bank infromation</string>
 
 
 </resources>
