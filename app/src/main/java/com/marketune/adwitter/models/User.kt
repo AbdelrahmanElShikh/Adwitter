@@ -11,5 +11,6 @@ data class User(
     @SerializedName("name") val name: String,
     @SerializedName("email") val email: String,
     @SerializedName("avatar") val avatar: String,
-    @SerializedName("balance") val balance: Double
-)
+    @SerializedName("balance") val balance: Double,
+    @SerializedName("details")  val details: Details
+    )
