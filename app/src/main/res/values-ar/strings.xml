@@ -62,9 +62,11 @@
 
     <!--bank information-->
     <string name="bank_information">المعلومات البنكية</string>
+    <string name="save">حفظ</string>
 
 
     <!--bank account fragment-->
+    <string name="phone">Phone Number</string>
     <string name="bank_account">الحساب البنكي</string>
     <string name="bank_country">مدينة البنك</string>
     <string name="bank_name">اسم البنك</string>

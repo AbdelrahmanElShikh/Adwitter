@@ -60,7 +60,7 @@
     <string name="age_targeting">Age</string>
     <string name="link_twitter_account">Link Twitter Account</string>
     <string name="choose_interest">Choose Interests</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="choose_area">Choose Area</string>
     <string name="choose_age">Choose Age</string>
@@ -72,6 +72,7 @@
 
     <!--bank information-->
     <string name="bank_information">Bank Information</string>
+    <string name="save">Save</string>
 
 
     <!--Payment and Financial-->
@@ -79,6 +80,7 @@
 
 
     <!--bank account fragment-->
+    <string name="phone">Phone Number</string>
     <string name="bank_account">BANK ACCOUNT</string>
     <string name="bank_country">Bank Country</string>
     <string name="bank_name">Bank Name</string>
